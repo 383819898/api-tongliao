@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>充值</title>
+	</head>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+	<link rel="stylesheet" href="http://api.jiujiuim.com/pages/jqueryTcc/css/style.css" />
+	<script type="text/javascript" src="http://api.jiujiuim.com/pages/jqueryTcc/js/jquery-2.2.3.min.js"></script>
+
+	<script src="http://api.jiujiuim.com/pages/jqueryTcc/js/popups.js" type="text/javascript" charset="utf-8"></script>
+
+	<meta name="format-detection" content="telephone=no" />
+
+	<style type="text/css">
+		input[type="button"] {
+			-webkit-appearance: none;
+		}
+		
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		body {
+			margin: auto;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			background-color: rgba(0, 0, 0, 0.02);
+		}
+		
+		.cz {
+			width: 96%;
+			margin: auto;
+			height: 50px;
+			margin-top: 30px;
+		}
+		
+		.cz1 {
+			font-size: 14px;
+			width: 22%;
+			float: left;
+		}
+		
+		.cz2 {
+			width: 70%;
+			float: right;
+			font-size: 13px;
+			color: #007AFF;
+			margin-left: 20px;
+		}
+		
+		.cz2>span {
+			color: #ccc;
+			float: right;
+			font-size: 20px;
+			/*margin-top: -5px;*/
+		}
+		
+		.cz2>img {
+			float: right;
+			width: 27px;
+			margin-top: -5px;
+		}
+		
+		.qian {
+			width: 100%;
+			padding-bottom: 100px;
+			background-color: white;
+			border-radius: 12px;
+		}
+		
+		.qian2 {
+			width: 92%;
+			margin: auto;
+			font-size: 16px;
+			padding: 25px 0 20px 0;
+		}
+		
+		.qian3 {
+			width: 92%;
+			margin: auto;
+			height: 50px;
+		}
+		
+		input {
+			resize: none;
+			outline: none;
+			background: none;
+			border: none;
+		}
+		
+		.qian3>div {
+			float: left;
+			font-size: 28px;
+			font-weight: bold;
+		}
+		
+		.qian3>input {
+			width: 200px;
+			margin-left: 10px;
+			font-size: 20px;
+			font-weight: bold;
+			margin-top: 10px;
+		}
+		
+		#sub {
+			width: 130px;
+			height: 40px;
+			background-color: #68c864;
+			color: white;
+			border-radius: 6px;
+			font-size: 16px;
+			text-align: center;
+			line-height: 40px;
+			margin: auto;
+			margin-top: 100px;
+			display: block;
+		}
+		
+		input::-webkit-input-placeholder {
+			color: #ccc;
+			font-weight: 200;
+		}
+		
+		input::-moz-input-placeholder {
+			color: #ccc;
+			font-weight: 200;
+		}
+		
+		input::-ms-input-placeholder {
+			color: #ccc;
+			font-weight: 200;
+		}
+		
+		.tan {
+			width: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			position: absolute;
+			z-index: 10;
+			margin: auto;
+			display: none;
+		}
+		
+		.yin {
+			width: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			z-index: 10;
+			margin: auto;
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+		
+		.cen {
+			width: 100%;
+			/* 	height: 140px; */
+			padding-bottom: 10px;
+			background-color: white;
+			/*top: 0;*/
+			left: 0;
+			bottom: -5px;
+			right: 0;
+			z-index: 15;
+			margin: auto;
+			border-radius: 10px;
+			position: absolute;
+		}
+		
+		.che_a {
+			font-size: 13px;
+			width: 96%;
+			color: #333333;
+			margin: auto;
+			height: 45px;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			line-height: 45px;
+			margin-bottom: 10px;
+		}
+		
+		.che_b {
+			line-height: 30px;
+			font-size: 13px;
+			height: 30px;
+			width: 96%;
+			/*border: 1px solid #CCCCCC;*/
+			margin: auto;
+		}
+		
+		.che_b input {
+			float: right;
+			transform: scale(1.3);
+			margin-top: 5px;
+		}
+		
+		.po {
+			font-size: 18px;
+		}
+		
+		.che_b input {
+			-webkit-appearance: none;
+			background: url(img/marquee.png);
+			transform: scale(1.2);
+			background-size: cover;
+			display: none;
+			width: 15px;
+			height: 15px;
+			resize: none;
+			margin-top: 10px;
+			outline: none;
+		}
+		.ali{
+			float: right;
+			margin-left: 10px;
+		}
+		.che_b input:checked {
+			transform: scale(1.2);
+			background-size: 100% 100%;
+			width: 14px;
+			height: 14px;
+			background: url(img/marquee2.png);
+		}
+		
+		.che_b img {
+			float: right;
+			width: 18px;
+			margin-top: 6px;
+		}
+		
+		.wei {
+			margin: auto;
+			width: 89%;
+			margin: auto;
+			font-size: 14px;
+			margin-top: 16px;
+			color: rgba(0, 0, 0, 0.4);
+		}
+	</style>
+
+	<body>
+		<div class="cz">
+			<div class="cz1">充值方式</div>
+			<div class="cz2">
+				<font class="ali"> 支付宝 </font>
+				<!--<span>></span>-->
+				<img src="/imgs/alipay.png" />
+			</div>
+		</div>
+
+		<div class="qian">
+			<div class="qian2">充值金额</div>
+
+			<div class="qian3">
+				<div>￥</div>
+				<input type="number" name="pay" id="pay" placeholder="请输入金额" />
+			</div>
+			<div class="wei">充值如出现未能及时到账请联系平台客服处理，谢谢</div>
+
+			<input type="button" name="sub" id="sub" value="充值" />
+		</div>
+
+		<!-- 第二步 提现单选弹窗-->
+		<div class="tan">
+			<div class="yin" onclick="che2()"></div>
+			<div class="cen">
+				<div class="che_a">请选择充值方式</div>
+				<label for="alipay">
+<!--					<div class="che_b" onclick="che(1)"> 支付宝<img src="http://api.jiujiuim.com/pages/img/marquee2.png" id="che"/></div>-->
+					<div class="che_b" onclick="che(1)"> 支付宝<img src="../img/marquee2.png" id="che"/></div>
+				</label>
+				<!-- <label for="wechat">
+					<div class="che_b" onclick="che(2)">微信<img src="../img/marquee.png" id="che2"/></div>				
+				</label> -->
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		$.getUrlParam = function(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) return unescape(r[2]);
+			return null;
+		}
+
+		var userId = $.getUrlParam('userId');
+		console.log(userId)
+        var token = $.getUrlParam('token');
+		$(".cz2").click(function() {
+			$(".tan").fadeIn()
+		})
+
+		//充值方式
+		var cznum = 903; //支付宝扫码 ,902是微信扫码
+		function che(e) {
+			$(".che_b img").attr("src", "http://api.jiujiuim.com/pages/img/marquee.png")
+			if(e == 1) {
+				$(".ali").text("支付宝")
+				$(".tan").fadeOut();
+				$("#che").attr("src", "http://api.jiujiuim.com/pages/img/marquee2.png");
+				$("#che2").attr("src", "http://api.jiujiuim.com/pages/img/marquee.png");
+			} else if(e == 2) {
+				$(".ali").text("微信");
+				$("#che2").attr("src", "http://api.jiujiuim.com/pages/img/marquee2.png");
+				$("#che").attr("src", "http://api.jiujiuim.com/pages/img/marquee.png")
+				$(".tan").fadeOut()
+			}
+			cznum = e
+		}
+
+		function che2() {
+			$(".tan").fadeOut()
+		}
+
+		//充值
+		$("#sub").click(function() {
+
+			if($("#pay").val() == "") {
+				jqtoast('金额不得为空')
+				return false;
+			}
+			/* else if($("#pay").val() * 1 <= 10) {
+				jqtoast('金额小于或等于10')
+				
+			}  */
+			else if($("#pay").val() > 0) {
+				//				jqtoast("充值成功")
+				//充值接口
+
+				$.ajax({
+					url: "http://api.jiujiuim.com/invokePayMethod?payType=" + cznum + "&amount=" + $("#pay").val() * 1 + "&userId=" + userId+"&token="+token,
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						console.log(data);
+						if(data.success == 1) {
+							jqtoast(data.msg);
+							retutn;
+						}
+						$("html").html("");
+						$("html").html(data.data);
+						//	document.pay.submit();
+
+					}
+
+				})
+
+			}
+		})
+		
+		
+
+	</script>
+
+</html>

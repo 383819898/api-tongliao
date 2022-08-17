@@ -1,0 +1,369 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>久久聊中文版 即时通讯</title>
+		<link rel="icon" href="img/yue.ico" />
+		<meta name="keywords" content="久久聊中文版，vk， vk苹果下载，VK安卓下载，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK电脑版下载，久久聊中文版，vk，vk苹果下载，VK安卓下载，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK中文PC版。" />
+		<meta name="description" content="久久聊中文版，vk，vk苹果下载，VK安卓下载 ，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK电脑版下载，久久聊中文版，vk，vk苹果下载，VK安卓下载，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK中文PC版。" />
+		<script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<style type="text/css">
+		body {
+			width: 720px;
+			height: 100%;
+			background-image: url(img/bjmob.png);
+		}
+		
+		a {
+			text-decoration: none;
+		}
+		
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		
+		.yin {
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			z-index: 15;
+			background-color: rgba(0, 0, 0, 0.4);
+			margin: auto;
+			top: 0px;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			display: none;
+		}
+		
+		.a1 {
+			right: 40px;
+			position: absolute;
+			top: 20px;
+		}
+		
+		.a2 {
+			width: 355px;
+			height: 174px;
+			text-align: center;
+			background-image: url(img/a6.png);
+			line-height: 170px;
+			position: absolute;
+			right: 170px;
+			top: 50px;
+		}
+		
+		.a2>img {
+			margin-top: 40px;
+		}
+		
+		.head {
+			width: 710px;
+			color: white;
+			letter-spacing: 98px;
+			font-size: 24px;
+			overflow: hidden;
+			margin-top: 10px;
+			margin-left: 5;
+		}
+		
+		.img3 {
+			width: 100%;
+			text-align: center;
+			margin-top: 80px;
+		}
+		
+		.qi {
+			text-align: center;
+			color: white;
+			font-size: 42px;
+			margin: 30px 0;
+		}
+		
+		.qi2 {
+			width: 100%;
+			text-align: center;
+			font-size: 30px;
+			color: white;
+		}
+		
+		.lie {
+			width: 514px;
+			margin: auto;
+			height: 100px;
+		}
+		
+		.xia {
+			width: 240px;
+			border-radius: 70px;
+			color: white;
+			font-size: 22px;
+			line-height: 70px;
+			box-shadow: 0px 0px 2px #CCCCCC;
+			float: left;
+			margin-top: 30px;
+		}
+		
+		.xia>img {
+			float: left;
+			margin-left: 20px;
+			margin-right: 20px;
+			margin-top: 10px;
+		}
+		
+		.xia2 {
+			width: 240px;
+			border-radius: 70px;
+			color: white;
+			font-size: 22px;
+			line-height: 70px;
+			box-shadow: 0px 0px 2px #CCCCCC;
+			float: right;
+			margin-top: 30px;
+		}
+		
+		.xia2>img {
+			float: left;
+			margin-left: 20px;
+			margin-right: 20px;
+			margin-top: 10px;
+		}
+		
+		.mob {
+			width: 100%;
+			text-align: center;
+			margin-top: 40px;
+		}
+		
+		.sy {
+			width: 100%;
+			text-align: center;
+			/*position: absolute;*/
+			bottom: 0;
+			color: white;
+			left: 0;
+			font-size: 22px;
+			right: 0;
+			padding: 10px 0;
+		}
+		/*---*/
+		
+		.kuang {
+			width: 100%;
+			height: 100%;
+			margin: auto;
+			top: 0;
+			left: 0;
+			display: none;
+			right: 0;
+			bottom: 0;
+			position: fixed;
+			z-index: 10;
+		}
+		
+		.shadow {
+			width: 100%;
+			height: 100%;
+			margin: auto;
+			position: fixed;
+			z-index: 15;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, 0.3);
+		}
+		
+		.kuang_cen {
+			width: 350px;
+			height: 315px;
+			margin: auto;
+			position: fixed;
+			z-index: 15;
+			top: 0;
+			left: 0;
+			right: 0;
+			border-radius: 8px;
+			overflow: hidden;
+			bottom: 0;
+			background-color: white;
+		}
+		
+		.bjd {
+			width: 300px;
+			height: 90px;
+			margin: auto;
+			background-image: url(img/bjdown.jpg);
+			background-size: cover;
+			margin-top: 40px;
+		}
+		
+		.bjd2 {
+			width: 300px;
+			height: 90px;
+			background-size: cover;
+			margin: auto;
+			margin-top: 40px;
+			background-image: url(img/bjdown2.jpg);
+		}
+	</style>
+
+	<body>
+		<div class="kuang">
+			<div class="shadow"></div>
+			<div class="kuang_cen">
+				<a href="http://www.vkzwb.com/ios/ios.html">
+					<div class="bjd"></div>
+				</a>
+				<a href="https://fir.im/vkzwb">
+					<div class="bjd2"></div>
+				</a>
+			</div>
+		</div>
+		<div class="bj">
+
+			<!--<img src="./img/2.png" class="img" />-->
+
+			<div class="head">VKZWBIM</div>
+			<div class="img3"> <img src="./img/logo.png" /></div>
+			<div class="qi">
+				久久聊中文版
+			</div>
+			<div class="qi2">
+				私有部署 加密通讯 安全高效 多端同步
+			</div>
+
+			<div class="lie">
+
+				<!--<a href="http://www.vkzwb.com/ios/ios.html" target="_blank">-->
+				<div class="xia" style="background-color: #f0c20c;" id="xia">
+					<img src="./img/pg.png" /> IOS 下载
+				</div>
+				<!--</a>-->
+				<a href="http://www.vkzwb.com/down/vkzwb.apk">
+					<div class="xia2" style="background-color: #3bc624;">
+						<img src="./img/yd.png" /> Android 下载
+					</div>
+				</a>
+			</div>
+
+			<div class="lie">
+				<div class="xia" style="background-color: darkcyan;" onclick="cli()">
+					<img src="img/logo3.png" style="margin-top: 20px;" /> WEB 网页版
+				</div>
+
+				<div class="xia2" style="background-color:dodgerblue;" onclick="cli()">
+					<img src="img/logo3.png" style="margin-top: 20px;" /> Windows 下载
+				</div>
+
+			</div>
+		</div>
+		</div>
+		<div class="mob">
+			<img src="img/mob2.png" height="800px" />
+		</div>
+		<div class="yin" id="yin">
+			<img src="img/a3.png" class="a1" />
+			<div class="a2">
+				<img src="img/a4.png" />
+			</div>
+		</div>
+		<div class="sy">VK 中文版官网版权所有</div>
+		<!--<img src="./img/wxts.png" class="wx" id="wx"/>-->
+
+	</body>
+
+	<script>
+		var deviceWidth = parseInt(window.screen.width);
+		var deviceScale = deviceWidth / 720;
+		var ua = navigator.userAgent;
+		if(/Android (\d+\.\d+)/.test(ua)) {
+			var version = parseFloat(RegExp.$1);
+			if(version > 2.3) {
+				document.write('<meta name="viewport" content="width=720,initial-scale=' + deviceScale + ', minimum-scale = ' + deviceScale + ', maximum-scale = ' + deviceScale + ', target-densitydpi=device-dpi">');
+			} else {
+				document.write('<meta name="viewport" content="width=720,initial-scale=0.72,maximum-scale=0.72,minimum-scale=0.72,target-densitydpi=device-dpi" />');
+			}
+		} else {
+			document.write('<meta name="viewport" content="width=720, user-scalable=no">');
+		}
+	</script>
+	<script type="text/javascript">
+		var u = navigator.appVersion;
+		var spli = u.split('zh-cn;').length //判断是否在qq浏览器中打开
+		// var wx = ((u.match(/MicroMessenger/i)) && (u.match(/MicroMessenger/i).toString().toLowerCase() == 'micromessenger'));
+
+		fangfa()
+
+		function fangfa() {
+
+			var browser = {
+				versions: function() {
+					var u = navigator.userAgent,
+						app = navigator.appVersion;
+					return { //移动终端浏览器版本信息
+						trident: u.indexOf('Trident') > -1, //IE内核
+						presto: u.indexOf('Presto') > -1, //opera内核
+						webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+						gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+						mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+						ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+						android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+						iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+						iPad: u.indexOf('iPad') > -1, //是否iPad
+						webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+					};
+				}(),
+				language: (navigator.browserLanguage || navigator.language).toLowerCase()
+			}
+			if(browser.versions.mobile) {
+
+				//判断是否是移动设备打开。browser代码在下面
+				var ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
+				if(ua.match(/MicroMessenger/i) == "micromessenger") {
+					// "微信端"
+					localStorage.setItem("mobile", "wei")
+					//在微信中打开
+					var wx = document.getElementById("yin");
+					wx.style.display = "block"
+
+				} else if(ua.match(/QQ/i) == "qq") {
+					if(spli < 2) {
+						var wx = document.getElementById("yin");
+						wx.style.display = "block"
+					}
+				} else {
+					if(browser.versions.ios == true) {
+						//在ios中打开
+
+					} else {
+
+						//在android中打开
+						//android
+					}
+				}
+			} else {
+				//否则就是PC浏览器打开
+				window.location = "./index.html"
+
+			}
+		}
+
+		function cli() {
+			alert("请在电脑上打开该网址")
+		}
+	</script>
+	<script type="text/javascript">
+		$("#xia").click(function(){
+			$(".kuang").fadeIn()
+		})
+		$(".shadow").click(function(){
+			$(".kuang").fadeOut()
+		})
+	</script>
+
+</html>
+
+<!-- 徐成  -->

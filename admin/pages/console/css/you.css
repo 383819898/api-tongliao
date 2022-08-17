@@ -1,0 +1,98 @@
+#music {
+	position: absolute;
+	top: 0;
+	left: 0;
+	outline: none;
+	resize: none;
+	width: 10px;
+	height: 10px;
+}
+
+#music>audio {
+	width: 100%;
+	/*height: 100%;*/
+}
+.body{
+	display: none;
+}
+#close{
+	font-size: 30px;float: right;margin-right: 5px;margin-top: -3px;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.r_con {
+	width: 100%;
+	box-sizing: content-box;
+    display: flex;
+    flex-direction: column-reverse;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 315px;
+    height: auto;
+    max-height: 100vh;
+    overflow: auto;
+    padding: 8px;
+    padding-top: 20px;
+}
+
+.r_con_a {
+	    width: 300px;
+    height: 100px;
+    margin: auto;
+    border-radius: 4px;
+    background-color: #B8F4BC;
+    box-shadow: 0px 0px 5px #CCCCCC;
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.r_con_a {
+	position: relative;
+}
+
+.r_con_a:hover .r_con_close {
+	display: block;
+	opacity: 1;
+	transition-duration: 0s;
+}
+
+.r_con_close {
+	position: absolute;
+	right: 0;
+	top: 0;
+	font-size: 28px;
+	font-weight: bold;
+	margin-right: 5px;
+	color: #666;
+	cursor: pointer;
+	/*display: none;*/
+	opacity: 0;
+	transition: opacity 2s;
+}
+
+.r_con_b {
+	width: 280px;
+	margin: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 22px;
+	color: #333;
+	line-height: 60px;
+}
+
+.r_con_c {
+	width: 280px;
+	margin: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 14px;
+	color: #999;
+}

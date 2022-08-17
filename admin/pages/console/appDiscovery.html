@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>发现管理</title>
+	</head>
+	<link href="/pages/common/layui/css/layui.css" rel="stylesheet" media="all">
+
+	<body>
+		<div class="layui-row">
+			<div class="layui-col-md1">&nbsp;</div>
+			<input id="pageCount" type="" name="" style="display: none">
+			<div id="userList" class="layui-col-md10">
+				<div class="user_btn_div" style="margin-top: 2%">
+					<div class="layui-form-item timeComponent" style="display: initial;">
+						<button onclick="addDiscovery()" class="layui-btn btn_addUser">新增发现</button>
+					</div>
+					<!-- <button class="layui-btn create_populer_inviteCode"  style="margin-left:100px;">生成推广型邀请码</button> -->
+				</div>
+
+				<!-- 账单页面的相关处理-->
+
+
+				<!-- <div id="user_table" class="layui-card" style="margin-top: 1%">
+				<div class="layui-card-header"><p>发现列表</p></div>
+				<div class="layui-card-body">
+					<table id="discovery_list" lay-filter="test" style="table-layout:fixed;word-break:break-all;" >
+						
+					</table>
+				</div>
+			</div> -->
+
+
+				<table class="layui-hide" id="demo" lay-filter="test"></table>
+
+
+
+
+				<!--操作-->
+				<script type="text/html" id="userListBar">
+					{{#  if(d.userId < 10100){ }}
+				<a class="layui-btn layui-btn-disabled layui-btn-xs delete" lay-event="delete">删除</a>
+				{{#  }else{  }}
+				<a class="layui-btn layui-btn-danger layui-btn-xs delete" lay-event="delete">删除</a>
+				{{#  } }}
+				{{#  if(d.userId < 10100){ }}
+				<a class="layui-btn layui-btn-disabled layui-btn-xs update" lay-event="update">修改</a>
+				{{#  }else{  }}
+				<a class="layui-btn layui-btn-primary layui-btn-xs update" lay-event="update">修改</a>
+				{{#  } }}
+				{{#  if(d.userId < 10100){ }}
+				<a class="layui-btn layui-btn-disabled layui-btn-xs randUser" lay-event="randUser">重置密码</a>
+				{{#  }else{  }}
+				<a class="layui-btn layui-btn-primary layui-btn-xs randUser" lay-event="randUser">重置密码</a>
+				{{#  } }}
+				{{#  if(d.userId < 10100){ }}
+					{{#  if(d.status == 1){ }}
+					<a class="layui-btn layui-btn-disabled layui-btn-xs locking" lay-event="locking">封号</a>
+					{{#  }else{  }}
+					<a class="layui-btn layui-btn-primary layui-btn-xs cancelLocking" lay-event="cancelLocking">解封</a>
+					{{#  } }}
+				{{#  }else{  }}
+					{{#  if(d.status == 1){ }}
+					<a class="layui-btn layui-btn-primary layui-btn-xs locking" lay-event="locking">封号</a>
+					{{#  }else{  }}
+					<a class="layui-btn layui-btn-primary layui-btn-xs cancelLocking" lay-event="cancelLocking">解封</a>
+					{{#  } }}
+				{{#  } }}
+
+
+				<a class="layui-btn layui-btn-primary layui-btn-xs friends" lay-event="friends">好友管理</a>
+				<a class="layui-btn layui-btn-primary layui-btn-xs friends" lay-event="sendMsg">发送消息</a>
+				
+					<a class="layui-btn layui-btn-primary layui-btn-xs createInviteCode" lay-event="inviteCode">邀请码</a>
+		
+				
+			</script>
+
+				<script type="text/html" id="delFriends">
+					{{#  if(d.status == -1){ }}
+				<a class="layui-btn layui-btn-disabled layui-btn-xs deleteFriends" lay-event="deleteFriends">删除好友</a>
+				{{#  }else{  }}
+				<a class="layui-btn layui-btn-danger layui-btn-xs deleteFriends" lay-event="deleteFriends">删除好友</a>
+				{{#  } }}
+
+				<a class="layui-btn layui-btn-primary layui-btn-xs chatRecord" lay-event="chatRecord">聊天记录</a>
+
+				{{#  if(d.status == -1){ }}
+				<a class="layui-btn layui-btn-primary layui-btn-xs moveBlacklist" lay-event="moveBlacklist">移除黑名单</a>
+				{{#  }else{  }}
+				<a class="layui-btn layui-btn-primary layui-btn-xs joinBlacklist" lay-event="joinBlacklist">加入黑名单</a>
+				{{#  } }}
+			</script>
+
+				<script type="text/html" id="delChartRecord">
+					<a class="layui-btn layui-btn-danger layui-btn-xs deletechatRecord" lay-event="deletechatRecord">删除</a>
+			</script>
+
+				<!--邀请码相关操作-->
+				<script type="text/html" id="inviteCodeBar">
+					{{#  if(d.totalTimes==1){ }}
+					<a class="layui-btn layui-btn-danger layui-btn-xs delete" lay-event="del_inviteCode">删除</a>
+				{{# }else if(d.totalTimes==-1){ }}
+					<a class="layui-btn layui-btn-xs" lay-event="del_inviteCode">禁用</a>
+				{{# } }}
+			</script>
+
+				<script type="text/html" id="billOperation">
+					<a class="layui-btn layui-btn-danger layui-btn-xs billDetails" lay-event="billDetails">账单详情</a>
+			</script>
+
+			</div>
+
+			<!-- 添加发现 -->
+			<div id="addUser" class="layui-col-md10" style="display: none">
+				<div id="addUserTitle" class="layui-card-header">新增发现</div>
+
+				<table class="layui-table">
+					<thead>
+						<tr>
+							<td width="20%">发现参数</td>
+							<td>发现信息</td>
+						</tr>
+					</thead>
+
+					<tbody>
+						<!--<tr>
+						<td>发现头像</td>
+						<td><div style="width: 200px;height: 200px;background-color: red"></div></td>
+					</tr>-->
+
+						<tr>
+							<td>发现标题</td>
+							<td><input id="title" type="text" name="title" class="layui-input"></td>
+						</tr>
+						<tr>
+							<td>发现网址</td>
+							<td><input id="url" type="text" name="url" class="layui-input"></td>
+						</tr>
+						<tr>
+							<td>图像预览</td>
+							<td><img height="40px" width="40px" id="image"></td>
+						</tr>
+						<tr>
+							<td>发现logo</td>
+							<td>
+								<button type="button" class="layui-btn" id="test1">上传图片</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div style="display: inline;">
+					<button onclick="submitForm()" class="layui-btn">提交</button>
+					<button onclick="User.button_back()" class="layui-btn layui-btn-primary layui-btn-sm" style="">&lt;&lt;返回</button>
+				</div>
+			</div>
+
+
+		</div>
+
+		<script type="text/html" id="barDemo">
+
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+		<script type="text/html" id="switchTpl">
+
+			<input type="checkbox" name="isShow" uid = "{{d.id}}" value="{{d.id}}" lay-skin="switch" lay-text="开|关" lay-filter="sexDemo" {{ d.isShow==0 ? 'checked' : '' }}>
+</script>
+
+
+		<!-- <script type="text/javascript" src="/pages/common/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/pages/common/layui/layui.all.js"></script>
+<script type="text/javascript" src="/pages/assets/js/jquery.md5.js"></script>
+<script type="text/javascript" src="/pages/console/js/common.js"></script>
+<script type="text/javascript" src="./js/console_ui.js"></script>
+<script type="text/javascript" src="./js/core.js"></script>
+<script type="text/javascript" src="./js/tripledes.js"></script>
+<script type="text/javascript" src="/pages/console/js/addressInfo.js"></script> -->
+
+		<script type="text/javascript" src="/pages/common/jquery/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="/pages/console/assets/xss-filters.1.2.7.min.js"></script>
+		<script type="text/javascript" src="/pages/common/layui/layui.all.js"></script>
+		<script type="text/javascript" src="/pages/assets/js/jquery.md5.js"></script>
+		<script type="text/javascript" src="/pages/console/js/common.js"></script>
+		<script type="text/javascript" src="./js/console_ui.js"></script>
+		<script type="text/javascript" src="./js/core.js"></script>
+		<script type="text/javascript" src="/pages/console/js/userList.js"></script>
+		<!-- 日期选择器 -->
+		<script>
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+				//日期时间选择器
+				laydate.render({
+					elem: '#birthday',
+					type: 'datetime',
+					max: 0 //最大时间
+				});
+			})
+
+
+			layui.use(['form', 'upload', 'jquery', 'layer', 'laydate', 'table', 'laytpl'], function() {
+				var table = layui.table;
+				var form = layui.form;
+
+				var $ = layui.jquery,
+					upload = layui.upload;
+
+				function start() {
+					table.render({
+						elem: '#demo',
+						height: 420,
+						url: request("/console/getDiscoversList") + "&userId=" + localStorage.getItem("id"),
+						title: '用户表',
+						page: true //开启分页
+							,
+						toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+							,
+						totalRow: true //开启合计行
+							,
+						cols: [
+							[ //表头
+								{
+									type: 'checkbox',
+									fixed: 'left'
+								},
+								{
+									field: 'id',
+									title: 'ID',
+									width: 100
+								}, {
+									field: 'title',
+									title: '标题',
+									width: 100
+								}, {
+									field: 'url',
+									title: '网址',
+									width: 200
+								}, {
+									field: 'img',
+									title: '图片',
+									width: 100,
+									height: 30,
+									templet: '<div ><img  class="xu_img" src="{{ d.img }}" height="30px"></div>'
+								}, {
+									field: 'isShow',
+									title: '显示',
+									width: 300,
+									templet: '#switchTpl'
+								}
+
+								, {
+									title: '操作',
+									fixed: 'right',
+									width: 165,
+									align: 'center',
+									toolbar: '#barDemo'
+								}
+							]
+						]
+					});
+
+				}
+
+				start()
+				//普通图片上传
+				var uploadInst = layui.upload.render({
+					elem: '#test1',
+					url: Config.getConfig().uploadUrl + "/upload/UploadServlet",
+					data: {
+						"access_token": localStorage.getItem("access_token"),
+						"userId": localStorage.getItem("account"),
+						validTime: "0"
+					},
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+
+							console.log(result)
+
+							$('#demo1').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+
+						//如果上传失败
+						if (res.success != 1) {
+							return layer.msg('上传失败');
+						} else {
+							url = res.data.images[0].oUrl
+							$('#image').attr('src', url)
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html(
+							'<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+
+
+				window.submitForm = function() {
+
+					var title = $("#title").val();
+					var url = $("#url").val();
+					var imgUrl = $('#image').attr('src');
+
+					if (title == '' || url == '' || imgUrl == '') {
+						layer.msg("标题网址和图片都不能为空！", {
+							icon: 3
+						});
+						return false;
+					}
+
+					var userId = localStorage.getItem("account");
+					Common.invoke({
+						url: request('/console/addDiscovery'),
+						data: {
+							'title': title,
+							'url': url,
+							'imgUrl': imgUrl,
+							'userId': userId
+						},
+						success: function(result) {
+							console.log(result)
+							if (result.resultCode == 1) {
+								layer.msg('编辑成功', {
+									icon: 1
+								});
+								start();
+								$("#userList").show();
+								$("#addUser").hide()
+
+							} else {
+								layer.msg("编辑失败", {
+									icon: 3
+								});
+							}
+						},
+						error: function(result) {
+							layer.msg("编辑失败", {
+								icon: 3
+							});
+						}
+					});
+				}
+
+
+
+				form.on('switch', function(data) {
+					var id = data.elem.value;
+					var check = data.elem.checked;
+					var isShow = null;
+					console.log(data.elem); //得到checkbox原始DOM对象
+					// console.log(data.elem.checked); //开关是否开启，true或者false
+					console.log(data.value); //开关value值，也可以通过data.elem.value得到
+					// console.log(data.othis); //得到美化后的DOM对象
+					var check = data.elem.checked;
+					console.log(check);
+					
+					if(check==true){
+						isShow = 0
+					}else if(check==false){
+						isShow = 1
+					}
+					
+					
+					Common.invoke({
+						url: request('/console/updateDiscoveryIshow'),
+						data: {
+							id:id,
+							isShow:isShow
+						},
+						success: function(result) {
+							console.log(result)
+							if (result.resultCode == 1) {
+								layer.msg('编辑成功', {
+									icon: 1
+								});
+								start();
+								$("#userList").show();
+								$("#addUser").hide()
+					
+							} else {
+								layer.msg("编辑失败", {
+									icon: 3
+								});
+							}
+						},
+						error: function(result) {
+							layer.msg("编辑失败", {
+								icon: 3
+							});
+						}
+					});
+					return false;
+				});
+
+
+			});
+
+
+
+
+			layui.use('table', function() {
+				var table = layui.table;
+				console.log(ConfigData);
+				//列表操作
+				table.on('tool(test)', function(obj) {
+					var layEvent = obj.event,
+						data = obj.data;
+
+					if (layEvent === 'del') { //删除  
+						console.log(data)
+						layer.confirm('真的删除么,数据不可恢复！', function(index) {
+							//向服务端发送删除指令
+							$.ajax({
+								url: request('/console/delDiscovery') + '&id=' + data.id + "&userId=" + localStorage.getItem("id"),
+								dataType: 'json',
+								success: function(data) {
+									console.log("???del discovery data==" + data)
+									if (data.success == 0) {
+										obj.del(); //删除对应行（tr）的DOM结构
+										layer.close(index);
+										layui.table.reload("demo")
+										layui.layer.alert("删除成功!");
+									} else {
+										layui.layer.alert("删除失败!");
+									}
+								},
+								error: function() {
+									layui.layer.alert("删除出错！！！");
+								}
+
+							})
+						});
+					};
+				})
+
+			})
+
+			function addDiscovery() {
+				$("#isPromo").val(0);
+				$("#isPromoParent").empty();
+				// renderForm(); //这个很重要
+				$("#telephone").removeAttr("readOnly");
+				$(".password").show();
+				$("#userList").hide();
+				$("#descriptionIteam").hide();
+				$("#accountIteam").hide();
+				$("#addUser").show();
+				$("#userId").val(0);
+				$("#userName").val("");
+				$("#telephone").val("");
+				$("#password").val("");
+				$("#sex").val("");
+				$("#isPublic").val("");
+
+				// 重新渲染
+				layui.form.render();
+				$("#addUserTitle").empty();
+				$("#addUserTitle").append("新增发现");
+			}
+		</script>
+
+	</body>
+</html>

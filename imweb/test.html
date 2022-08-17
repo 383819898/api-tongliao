@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+
+
+<meta http-equiv="Content-Type" content="audio/amr" />
+<meta http-equiv ="proma" content = "no-cache"/>
+<meta http-equiv="cache-control" content="no cache" />
+<meta http-equiv="expires" content="0" />
+<title>即时通讯Web版</title>
+
+
+
+<style type="text/css">
+	body{
+		background-color: #EEF0F5;
+	}
+	*{
+		transition: 0.4s;
+		-webkit-transition: 0.4s;
+	}
+	
+</style>
+
+</head>
+
+<body style="background-color: #E9E9E9;" class="">
+
+</script>
+
+
+<!-- 
+{isEncrypt:1,fromUserName:疯子,toUserId:4d427727da674a16bc2f2ba496589ad7,deleteTime:1587731026,
+content:teoF5XCB2iDKZgl+hUv8lZQoGu0Mz0UjSWXoscB7AFYBFhc7aINg9g6TsR6K kCPb,fromUserId:10004585,type:1,timeSend:1.556195026E9,messageId:69927874fa0b4a9c8148b736eab41323}
+ -->
+
+
+
+
+<script src="assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="js/tb_areas.js" type="text/javascript"></script>
+
+<script src="assets/js/jquery.md5.js" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+
+	var ivKey=[1,2,3,4,5,6,7,8];
+	function getStrFromBytes (arr) {
+	    var r = "";
+	    for(var i=0;i<arr.length;i++){
+	        r += String.fromCharCode(arr[i]);
+	    }
+	    //console.log(r);
+	    return r;
+	}
+	var iv=getStrFromBytes(ivKey);
+
+	var encryptDES=function(message,key){
+	 	var keyHex = CryptoJS.enc.Utf8.parse(key);
+        var encrypted = CryptoJS.TripleDES.encrypt(
+                       message, 
+                        keyHex, {  
+                        iv:CryptoJS.enc.Utf8.parse(iv),    
+                        mode: CryptoJS.mode.CBC,    
+                        padding: CryptoJS.pad.Pkcs7
+                        });
+        //encrypted=CryptoJS.enc.Utf8.stringify(decrypted);
+       // console.log("encryptDES "+encrypted);
+       var result= encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+       return result;
+	}
+	var decryptDES=function(message,key){
+		//把私钥转换成16进制的字符串
+        var keyHex = CryptoJS.enc.Utf8.parse(key);
+         
+        //把需要解密的数据从16进制字符串转换成字符byte数组
+        var decrypted = CryptoJS.TripleDES.decrypt({
+            ciphertext: CryptoJS.enc.Base64.parse(message)
+        }, keyHex, {
+            iv:CryptoJS.enc.Utf8.parse(iv), 
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        //以utf-8的形式输出解密过后内容
+        var result = decrypted.toString(CryptoJS.enc.Utf8);
+        return result;
+	}
+
+	var getMsgKey=function(msg){
+		var key= "5e29f483c48848"+parseInt(msg.timeSend)+msg.messageId;
+			return $.md5(key);
+	}
+
+	function GenKey(){
+		let rsaKeyPair = cryptico.generateRSAKey(passphrase, bits);
+			//cryptico.publicKeyString(rsaKeyPair);  
+
+		let publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCCjpncvOtMHIp4Bv9sX3JMoSlYKCWsaHdDZ5Oi+QybEDQQlk+MS0wDv+CodsbBFkFwkYcScJzXO/2tM7zVLJR71H761u/woIC5WiBivEMfF6paD0oUM/M440N6ek9ZVONd+W29tnsA+pRVPhN8JhIJaWpuB//UoROXp0PWMjfiZwIDAQAB";
+
+
+
+		console.log(" publicKey ",publicKey);
+
+		let plainText = "hello";
+		console.log(" 明文  ",plainText);
+		let encryptionResult = cryptico.encrypt(plainText, publicKey); 
+
+		let encryptText=encryptionResult.cipher;
+		console.log(" encryptionResult ",encryptText);
+
+		var decryptionResult = cryptico.decrypt(encryptText,rsaKeyPair);
+		console.log(" decryptionResult ",decryptionResult.plaintext);
+	}
+	
+
+	
+</script>
+
+
+<!-- 消息加密相关-->
+<script src="assets/js/crypto-js.js"></script>
+<script src="assets/js/jsencrypt.min.js"></script>
+<script src="assets/js/elliptic.js"></script>
+
+
+<!-- <script src="assets/js/cryptico.min.js"></script> -->
+
+<script src="js/encryptUtils.js"></script>
+
+
+<!-- {"isEncrypt":1,"fromUserName":"德恩","toUserId":"6f354b73967d4ec1ae63306b94bdd0e8","deleteTime":-1,"content":"WyyPfaBKM+/WsEMO0RE3QaEW8izfv8E8iwAJqNhMy8lfsC0Xnm4Bj9CeKA9m /vQI","fromUserId":"10000004","type":1,"timeSend":1556249183,"messageId":"8d45b3033ec446ac8ab1df65d20b3e74","chatType":"groupchat","from":"6f354b73967d4ec1ae63306b94bdd0e8","to":"10000003"} -->
+	
+<script type="text/javascript">
+
+
+	$(function() {
+	    newTestRSA();
+        // testAESCode();
+        // testRSA();
+        // testMd5();
+		/*testLoginPwd();
+		testParamKeySort();
+		testMAC();
+		testRSA();*/
+
+
+		//testECDH1();
+		//testECDH();
+		//testDH();
+		// testECDH();
+		//testDH();
+	});
+	
+	
+	function testECDH(){
+		var ecdh = new elliptic.ec("secp256k1");
+      var key = ecdh.genKeyPair();
+      //var key1 = ecdh.genKeyPair();
+      //var comm = key.derive(key1.getPublic());
+      //var comm1 = key1.derive(key.getPublic());
+
+      let webpri=EncryptUtils.encryptDHPrivateKey(key);
+
+      let webpub=EncryptUtils.encryptDHPublicKey(key.getPublic());
+      console.log("webpri "+webpri);
+	  console.log("webpub "+webpub);
+      var pubPoint = key.getPublic();
+      
+
+      var pubBegin="3056301006072a8648ce3d020106052b8104000a034200";
+
+      var priBegin="30740201010420";
+      var priEnd="A00706052B8104000AA144034200";
+     /* console.log("priBegin => ",priBegin.length);
+       console.log("priEnd => ",priEnd.length);*/
+     
+
+      var pub="MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEMcEC9/rc2AGOiRMeDVB9qHE3R710ianRWhae4LlmFke8FJL4+egmPoRuOri088pM6C0T7bDC8yNw4aMXm9rlzg=="
+     
+     var priKey="MHQCAQEEICSLtVso0j2ed3gEuYGB6KwI4iGXEqeZ6wVEJBdMd5JooAcGBSuBBAAKoUQDQgAEMcEC9/rc2AGOiRMeDVB9qHE3R710ianRWhae4LlmFke8FJL4+egmPoRuOri088pM6C0T7bDC8yNw4aMXm9rlzg==";
+ 		
+
+	console.log("javapri "+priKey);
+	console.log("javapub "+pub);
+
+ 	  
+ 	  let key2=EncryptUtils.decryptDHPublicKey(pub);
+
+ 	  let key3=EncryptUtils.decryptDHPrivateKey(priKey);
+
+
+ 	
+		
+ 	  var comm1 = key.derive(key2.getPublic());
+
+ 	   var comm2 = key3.derive(key.getPublic());
+
+ 	   let priByte=CryptoJS.enc.Hex.parse(comm1.toString(16));
+		comm1= CryptoJS.enc.Base64.stringify(priByte);
+       console.log("comm1 ",comm1);
+       //console.log("comm2 ",comm2.toString(16));
+
+      console.log("key2",key2);
+ 	  console.log("key3",key3);
+
+
+
+     
+
+		
+	}
+
+	function testDH(){
+		 var ec = new elliptic.ec('secp256k1');
+
+	 
+	   
+
+	    var key = ec.genKeyPair();
+	    var pub = key.getPublic();
+	    var pri = key.getPrivate('hex');
+	    console.log("pri length = " + pri.length);
+	     console.log("pri = " + pri);
+	    var aPub = '3056301006072a8648ce3d020106052b8104000a034200' + pub.encode('hex');
+	    console.log("aPub = " + aPub);
+	    var aPri = '30740201010420' +
+	        pri +
+	        'A00706052B8104000AA144034200' +
+	        pub.encode('hex');
+	    console.log("aPri = " + aPri);
+	    let hex=CryptoJS.enc.Hex.parse(aPri);
+	    let base64Str=CryptoJS.enc.Base64.stringify(hex);
+	   let aaa= EncryptUtils.decryptDHPrivateKey(base64Str);
+
+	}
+
+
+	
+
+	function testLoginPwd(){
+		let pwd="123456";
+		let encode=EncryptUtils.buildLoginPassword(pwd);
+		
+		console.log("login pwd encode ===> "+encode);
+	}
+	function testParamKeySort(){
+		//排序的函数
+		let data = {
+	        'a': 'value',
+	         'b': 'value1',
+	         'c': 'value2',
+	         'd': 'value3'
+        }
+	   data = EncryptUtils.paramKeySort(data);
+	   console.log('paramKeySort', data);
+	   let aesResult=EncryptUtils.encryptAES_StrToStr("hello","1234567890123456");
+	   console.log('aesResult', aesResult);
+	}
+	
+	function  testMd5() {
+        let test = EncryptUtils.encryptMacToBase64("123456",CryptoJS.MD5("5e29f483c48848"));
+        console.log("test "+ test)
+	}
+	
+	function testMAC(){
+		// let hmac = EncryptUtils.encryptMacToBase64("hello", "123456");
+		let hmac = EncryptUtils.encryptMacToBase64("5e29f483c4884886152170097611567600364080", "7ba1bd982b33ac731c2c3bca90e77be9");
+		console.log('hmac ', hmac);
+	}
+	
+	function testAESCode() {
+        let privateKey = "9Go9R90sTGbdNePkO/ziuKxtCuPwSR/dTP35K5SUyFvQdEpX+KV4DjZq0ZOFKvebvgnUoiG0KGxwK1+BO+UQM5GJSVCtjwxGlALI/zD2vu8YEtu6URTFl3WegvejOpU9ktCoagS8lSjw/HBdtr95CND2eQBYukPUU6mcF4QyrseviBoCPtA44KUFBwqhKenDS9ka4xPHcxbGpBqP8vj2zmEE8v0cFPpxtjjoZJglNwD8KngRAcF3eDLByr3q5Om6LrzziVvdSX/qMn5Olm0hg69Ofh/P8r6KVPTvIvdNdngjrbFsmidpCs4SKtPkd1nfgnVTj2nVkcpuknlZfhJ2560BTgLoPHaCQIDLTi0fX7YUGByBBXscfImuf+aqHtzDm+a+xhN+zAcWecpiNBlCt5Fvs9IfsVyulO8aVKI7QAJ86k6mZnXySRfCwJjzdieaUuZDJUG8MyO1vh8Hx2UiIatcUP85oBYJS2VEr9Gix1S/V2THv6NxHa5b9DlHn4wWx4iaJKI8tRFpuuzDH5e4CZwGVsCE4kk/XLsngThdYwqKZap0bSROY291ECixwPlrbFLr+yXoBVMU8mrl+DwKnuQIhNL3pss//2UMJAVIBdNIimfXz4a9LKJpa2vFRVgz02RXuOl4OjgV6kQ9vzO96Yk7leYekNy1aqCXtYN3YoKw7Wdz1Q7Bo9tatyXwviD9re27MocyKhQVXEj7qoEDMU5kSWcNxPy3PqGF8Qi3xtwpovCo+QLJDjySdR7K6N+fvVdvjpKYikD/g/sMLKm10rAQ43Gf8VWvKa7rj63aUSccI+iYFl5SnmichG+QlkEU";
+        // let key = EncryptUtils.buildLoginPassword("123456");
+        // let key = $.md5("123456");
+        let key = CryptoJS.MD5("123456");
+        // let md5pwd=CryptoJS.MD5("123456");
+        let decryptPrivateKey = EncryptUtils.decryptAES_Str(privateKey,key);// aes解密私钥
+        console.log(" userLoginV1 decrypt AES privateKey : "+decryptPrivateKey);
+        // let jsDecrypt = EncryptUtils.generatedRSAKey(decryptPrivateKey);// 秘钥
+        // let decryptCode=EncryptUtils.decryptByRSA(jsDecrypt,obj.code);
+        // console.log("私钥 ： "+privateKey+"  秘钥："+jsDecrypt+" 解密后的code ："+decryptCode);
+	}
+    
+	function testForge() {
+        let priKey = "MIICXQIBAAKBgQCwk5smHDnRwWYuk804WRTx8GPnQkeaaHKqeD3uG7/CvWXbgP9rDgvDnCvtBifpdGjhs9ZtEcO6eVpS00H95LRFimT6zywvdDBa/sRLdzbSzTk3DipluvXbAJg4yAMU1AQz0ibhvTN+u2nHmZ091m6cfu02s65E/Oc8NqrL6zzPqQIDAQABAoGAZbv1lOSIT5jNBaL0hzWUAr0M4k3msUjiX+M9UzW7qziyOeC9yHFkR8Rv7nUwg6olT3zs2xR0H7kRWE0NZXnifoUbxx+y3yyyIYZFPXHYyNmTyF7LUJt1ApXvVS1HXgTx4XXWStLCoTn6R54qb8Vug4EG4JClEcwOQU+IrhIYlq0CQQDgneBjy00TpokPUcH7D63yeqC4fXnAA8fZQWvsDBK1G6eY7V8+fskyeEzNK8zzBsfbWg8xn3xGpPY2Iv+h4Z3/AkEAyT9sZ6LRsCUqQOwfMmL93jDt+wSART3fhorJi+lfO6Kf35jKBZur16kbjWkb5alN0XOQI0VyZ1rQYUrbT+viVwJBAJu9u/VV5GaIpSYDGU48C+9CCaiCD+YMeQhxrSPpJxt+RlHp3I1Xmaet9AqaoSus+uxj4H8WxzOwc6sLz1XuOv8CQCkI0J7VGTJ0cYgpXTcV7jPHAE9lnI4BzrkNRYlMvYlYYIbkDZVVJ5XiumZ8Hx8WBXMGwEYg2/HtF34vGEbUjyMCQQCfLrYPtBTObMGMrxSTeNkI4dZ5+DBLemZwxkVAcbpPqt5IPJ6PwaFamsu+rMY1A550y9t1KKRspwbmMf6e6gqx";
+        let code = "fe+dULiICjdyYi0lGQDL6cuGv39qJQrGsrvzIgwQ4o5wjbRRyv9IDUmlchkPZJfE02Tq/1W14deSYWwsWKt0X4r1JA+bZmNqHFqtkDGHG3d7RR6KQF8+LsMpfRh/QAFtYju5DVHyhiywULoPvNN5o0rXsBwQz/QPliKL566nkdA=";
+    }
+
+	function newTestRSA() {
+        /*let keyPrair = EncryptUtils.generatedRSAKey();
+        console.log("keyPrair.getKey() : "+keyPrair.getKey());
+        console.log(" get RSA Key  getPrivateKey ",keyPrair.getPrivateKeyB64());
+        console.log(" get RSA Key  getPublicKey ",keyPrair.getPublicKeyB64());
+
+        let privateContent = "b1bE8VRWHu3Lwe+kGls6M8uHGQ4Ft/QeAHNpGaLP5tZvZy9CmVKvkNOtQauFq+ETLcynG/crmEhBe0nlx/0gZjyAXv5Ygzct62tPNLl36CIiM5h+YJI+8eym+mCGeSnJsWLxiI96gUQ/dNCyVPrpAY1Zs9Ivw1u8rHEJtDSA+pE=";
+        let jsDecrypt = EncryptUtils.generatedRSAKey(keyPrair.getPrivateKeyB64());
+        let content= EncryptUtils.decryptByRSA(jsDecrypt,privateContent);
+        console.log("rsa content ",content);*/
+
+        // The passphrase used to repeatably generate this RSA key.
+        // The length of the RSA key, in bits.
+        let bits = 1024;
+        let keyPrair = EncryptUtils.generatedRSAKey();
+        keyPrair.getKey();
+        console.log(" get RSA Key  getPrivateKey ",keyPrair.getPrivateKeyB64());
+        console.log(" get RSA Key  getPublicKey ",keyPrair.getPublicKeyB64());
+
+
+        let priKey="MIICXAIBAAKBgQCCjpncvOtMHIp4Bv9sX3JMoSlYKCWsaHdDZ5Oi+QybEDQQlk+MS0wDv+CodsbBFkFwkYcScJzXO/2tM7zVLJR71H761u/woIC5WiBivEMfF6paD0oUM/M440N6ek9ZVONd+W29tnsA+pRVPhN8JhIJaWpuB//UoROXp0PWMjfiZwIDAQABAoGAd/oYBzRNfzpTPY4guDTWUvlfhzYNuOyffP/4OrJoFS/EyOF45NJlXqS8DdRpPhP3uzzhRd7bIyhsLPj4tWYsZGuyA+GyOjF9Zj/rOWPU1rP4qWSFQ1p9pHvugoi3yt9I1bIqggvUcXk3hdnuVdfSjQE1fY5lpXZvGKB6zNpqZVECQQDuWimYnFgc/1BJtSfCwtKiN0eFMw8S4gTyzWttwOtFxBsHo7Q1l5Xvk564kwZXr2CuOXahrJaDjYm7vNzfoy6bAkEAjDk9QynP8YXQsISPB/X/PxYYpZbAti85sk3JPVO2jb3tAkxCYmIxUg1xgpogaOupqKxeQe83gD8742+5xSXSJQJASuFegghUEkAPjChyZlhobffp6ynASZFiNplcb62U/GUAjOTcH54Qx6Rbz+a4rmF1gSaiY2ZiHtAffjB2P3f3kwJASBx7k9mh1ZwyeUSCZd6tOB096ZJAYrCgpEB6eC5f2D7O7vqWvQ+wO3ksYbSvbCWdZ1/VTWUfDrX2L31adLeBfQJBALGYWVO6Ksv72k1vbSywhLYOKVe3JLZiZgFUNvKLh0g1Tfm1pK29veSSGey8HIkGtI04E6tgQVLx3adZSxjdnFI=";
+
+
+        var pubKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCCjpncvOtMHIp4Bv9sX3JMoSlYKCWsaHdDZ5Oi+QybEDQQlk+MS0wDv+CodsbBFkFwkYcScJzXO/2tM7zVLJR71H761u/woIC5WiBivEMfF6paD0oUM/M440N6ek9ZVONd+W29tnsA+pRVPhN8JhIJaWpuB//UoROXp0PWMjfiZwIDAQAB";
+        let jsDecrypt = EncryptUtils.generatedRSAKey(priKey);
+
+        let jsEncrypt = EncryptUtils.generatedRSAKey(pubKey);
+
+        let encryptStr="ejOeerZ5MXrlVi6MyiFiPFqVGPb0hV8gaUqylAu8V+X5/BJMXzYwRNxp0SL0VM9aWGyqtUZbimY/VUB7/fxHHj4nf9bmLKoQkGGgjJ8NfdotyENFgLo01Xe4j58BOIrfre7rnXRYZPGkVCPgXXYPZ49L0yk+O7co+kOFaJbvM+A=";
+
+
+        let enStr=EncryptUtils.encryptByRSA(jsEncrypt,"hello");
+        console.log("rsa encrypt ",enStr);
+        let deStr=EncryptUtils.decryptByRSA(jsDecrypt,enStr);
+        console.log("rsa decrypt ",deStr);
+        /**   测试中   **/
+        // 进行RSA加密
+        var encrypt = new JSEncrypt();
+        //获取公钥
+        encrypt.setPublicKey(pubKey);
+        //公钥加密
+        var encrypted = encrypt.encryptLong2("hello");
+        console.log("hello : "+encrypted);
+        // let deStrTest = Test.testRSAOpen(priKey,encrypted);
+        let deStrTest = Test.testRSAOpen(priKey,encrypted);
+        console.log("rsa decryptTest : ",deStrTest);
+
+        var signStr=EncryptUtils.signByRSA(jsDecrypt,"hello");
+
+        console.log("rsa sign ",signStr);
+
+        console.log("rsa verify ",EncryptUtils.verifyByRSA(jsEncrypt,"hello",signStr));
+
+        // 公钥加密私钥解密
+        // let privateKey = "9Go9R90sTGbdNePkO/ziuKxtCuPwSR/dTP35K5SUyFvQdEpX+KV4DjZq0ZOFKvebvgnUoiG0KGxwK1+BO+UQM5GJSVCtjwxGlALI/zD2vu8YEtu6URTFl3WegvejOpU9ktCoagS8lSjw/HBdtr95CND2eQBYukPUU6mcF4QyrseviBoCPtA44KUFBwqhKenDS9ka4xPHcxbGpBqP8vj2zmEE8v0cFPpxtjjoZJglNwD8KngRAcF3eDLByr3q5Om6LrzziVvdSX/qMn5Olm0hg69Ofh/P8r6KVPTvIvdNdngjrbFsmidpCs4SKtPkd1nfgnVTj2nVkcpuknlZfhJ2560BTgLoPHaCQIDLTi0fX7YUGByBBXscfImuf+aqHtzDm+a+xhN+zAcWecpiNBlCt5Fvs9IfsVyulO8aVKI7QAJ86k6mZnXySRfCwJjzdieaUuZDJUG8MyO1vh8Hx2UiIatcUP85oBYJS2VEr9Gix1S/V2THv6NxHa5b9DlHn4wWx4iaJKI8tRFpuuzDH5e4CZwGVsCE4kk/XLsngThdYwqKZap0bSROY291ECixwPlrbFLr+yXoBVMU8mrl+DwKnuQIhNL3pss//2UMJAVIBdNIimfXz4a9LKJpa2vFRVgz02RXuOl4OjgV6kQ9vzO96Yk7leYekNy1aqCXtYN3YoKw7Wdz1Q7Bo9tatyXwviD9re27MocyKhQVXEj7qoEDMU5kSWcNxPy3PqGF8Qi3xtwpovCo+QLJDjySdR7K6N+fvVdvjpKYikD/g/sMLKm10rAQ43Gf8VWvKa7rj63aUSccI+iYFl5SnmichG+QlkEU";
+        let privateKey = "PJM13mDvXWSGVpFAbKKlI5ejp/98YHWce2QkhFqRsMlmcx5iecKGu2DuBJ4t6lx6j/y6bfKCtPaYeatqYb1XzayhhZEz3gmyUa09+Qi10buZPipWVDy9Bt6BOPxsbO6Bt6MVN+yQAOSFTSwxlRMHr2ViFihihyVhhQKzjl5MdCjmWsWoW+/8RPpMyVlrIGHP4Pz+Rr743BlX6g7V5DhzH+2yS9y6DGciSquy+WQI+elE2BeJcjgo3qF15erPwyrOGx0njcsdArwVJiRO51tOPPqhT3olnMsuuRYT6Waeug1xDNkDaxK7kd0tPyMGM/a78uZqfZc1WMCFYJ6WpPW7Oq8xufg4QR2M1+bdzzjZ3l1mIsIQPlq9UIqMA6cmi2MUo8GZYNPc7yu3yoCh0JKsOaI9IETd/aCYxfhkfXq5HlxNYQkUsZdZVaIybM/lZYvXBwTuYBjp7jhfWbyUEbcq7QeK8uhrNgnM37A6/iGdjCHR+Za7nWBdocL5AvER+C06cEmu9+VxJZDz02CzABeF389vI8NAdZhwGj5NGAgdlZP+26d6PHb8RSIY6BTTnPkxYZrtqxDpH+I04LpYY2gNpxdZvqq1RzpHXe0QOfrjVXbmvdlCczf6WC9mNfvLnSqbvi/pWxuNoaRJfXMf40Am/oenhCLldn+7VFZL2VwTuVJeyzjefXWcJH713oTT6zQ027qn4aBrwE/qakq9WH2SPX7536RgCkf+Zjmz/lqFIWsXeRYgaLqnOchIrQeleDs/S7Q/LzmVp1MtJQpQxcEdnrPCS4hwtBv70fUhJWlC6lZtpA0QuZRv2LpTuBH7di0p";
+        // let code = "rfb1QZ8rvmNM4ruWW0Aon5nxYFQ84O0qhU6MLC/0AfYqEEU6OLGSR/6uTXd+eNtb5uh/Gi/iw1d2pdB26YZNNfJN6CdlPNhM9o2sBvCIq2yd6StlM6YG0Tf/2gEObv+PD0aVe5VMx9nxLpU25Sk2zEXc3NnWCVX8VkDhx7jysi8=";
+        let code = "jmhVKMV6oFNrG8/Ef3W6l1Q/kFdMD93nNXp4N2lCa/Yq8zFab6Hpjbn8aX5Ha0mSwPEUGJXrG9eJg4rftNkmKK1z/MGZ8XPUkBJE78rqiRvsyY63Ih081+YcbnXxdjarPxc3+QZCNZsPtF2bYy1it9Ss/BKxrcyNhVQQLpDujqY=";
+        // 解密私钥
+        let decryptPrivateKey = EncryptUtils.decryptAES_Str(privateKey,CryptoJS.MD5("1234567"));// aes解密私钥
+        let testDecrypt = EncryptUtils.generatedRSAKey(decryptPrivateKey);// 秘钥
+        let decryptCode=EncryptUtils.decryptByRSA(testDecrypt,code);
+        decryptCode= CryptoJS.enc.Utf8.parse(decryptCode);
+        // decryptCode=CryptoJS.enc.Base64.parse(decryptCode);
+        decryptCode=CryptoJS.enc.Base64.stringify(decryptCode);
+        console.log("decryptCode", decryptCode);
+	}
+	
+	function testRSA(){
+
+		// The passphrase used to repeatably generate this RSA key.
+		// The length of the RSA key, in bits.
+		let bits = 1024; 
+		let keyPrair = EncryptUtils.generatedRSAKey();
+		keyPrair.getKey();
+		console.log(" get RSA Key  getPrivateKey ",keyPrair.getPrivateKeyB64());
+		console.log(" get RSA Key  getPublicKey ",keyPrair.getPublicKeyB64());
+
+
+		let priKey="MIICXAIBAAKBgQCCjpncvOtMHIp4Bv9sX3JMoSlYKCWsaHdDZ5Oi+QybEDQQlk+MS0wDv+CodsbBFkFwkYcScJzXO/2tM7zVLJR71H761u/woIC5WiBivEMfF6paD0oUM/M440N6ek9ZVONd+W29tnsA+pRVPhN8JhIJaWpuB//UoROXp0PWMjfiZwIDAQABAoGAd/oYBzRNfzpTPY4guDTWUvlfhzYNuOyffP/4OrJoFS/EyOF45NJlXqS8DdRpPhP3uzzhRd7bIyhsLPj4tWYsZGuyA+GyOjF9Zj/rOWPU1rP4qWSFQ1p9pHvugoi3yt9I1bIqggvUcXk3hdnuVdfSjQE1fY5lpXZvGKB6zNpqZVECQQDuWimYnFgc/1BJtSfCwtKiN0eFMw8S4gTyzWttwOtFxBsHo7Q1l5Xvk564kwZXr2CuOXahrJaDjYm7vNzfoy6bAkEAjDk9QynP8YXQsISPB/X/PxYYpZbAti85sk3JPVO2jb3tAkxCYmIxUg1xgpogaOupqKxeQe83gD8742+5xSXSJQJASuFegghUEkAPjChyZlhobffp6ynASZFiNplcb62U/GUAjOTcH54Qx6Rbz+a4rmF1gSaiY2ZiHtAffjB2P3f3kwJASBx7k9mh1ZwyeUSCZd6tOB096ZJAYrCgpEB6eC5f2D7O7vqWvQ+wO3ksYbSvbCWdZ1/VTWUfDrX2L31adLeBfQJBALGYWVO6Ksv72k1vbSywhLYOKVe3JLZiZgFUNvKLh0g1Tfm1pK29veSSGey8HIkGtI04E6tgQVLx3adZSxjdnFI=";
+
+
+       var pubKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCCjpncvOtMHIp4Bv9sX3JMoSlYKCWsaHdDZ5Oi+QybEDQQlk+MS0wDv+CodsbBFkFwkYcScJzXO/2tM7zVLJR71H761u/woIC5WiBivEMfF6paD0oUM/M440N6ek9ZVONd+W29tnsA+pRVPhN8JhIJaWpuB//UoROXp0PWMjfiZwIDAQAB";
+		let jsDecrypt = EncryptUtils.generatedRSAKey(priKey);
+
+		let jsEncrypt = EncryptUtils.generatedRSAKey(pubKey);
+
+		let encryptStr="ejOeerZ5MXrlVi6MyiFiPFqVGPb0hV8gaUqylAu8V+X5/BJMXzYwRNxp0SL0VM9aWGyqtUZbimY/VUB7/fxHHj4nf9bmLKoQkGGgjJ8NfdotyENFgLo01Xe4j58BOIrfre7rnXRYZPGkVCPgXXYPZ49L0yk+O7co+kOFaJbvM+A=";
+		
+
+		let enStr=EncryptUtils.encryptByRSA(jsEncrypt,"hello");
+        console.log("rsa encrypt ",enStr);
+        let bytes=CryptoJS.enc.Hex.parse(enStr);
+        let deStr=EncryptUtils.decryptByRSA(jsDecrypt,enStr);
+        enStr =CryptoJS.enc.Base64.stringify(bytes);
+        console.log("rsa encrypt ",enStr);
+
+
+
+		console.log("rsa decrypt ",deStr);
+
+		var signStr=EncryptUtils.signByRSA(jsDecrypt,"hello");
+
+		console.log("rsa sign ",signStr);
+
+		console.log("rsa verify ",EncryptUtils.verifyByRSA(jsEncrypt,"hello",signStr));
+	}
+	
+</script>
+
+
+
+</body>
+	
+
+</html>

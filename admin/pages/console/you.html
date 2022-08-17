@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/you.css" />
+	<script type="text/javascript" src="/pages/common/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/pages/console/js/common.js"></script>
+	<script type="text/javascript" src="/pages/assets/js/jquery.md5.js"></script>
+	</head>
+	<body>
+	
+		<div id="close" style="font-size: 30px;float: right;margin-right: 5px;margin-top: ;">×</div>
+		<div id="music">
+			<audio id="myAudio">
+				<source src="music/default.mp3" type="audio/ogg">
+				<source src="music/default.mp3" type="audio/mpeg"> 您的浏览器不支持 audio 与元素。
+			</audio>
+		</div>
+		<div class="r_con"></div>
+	</body>
+	<script type="text/javascript">
+	
+
+	
+	
+		$("#close").click(function() {
+			window.parent.document.getElementById("you").style.display = "none";
+		})
+
+		
+		var music = document.getElementById("myAudio"); //获取ID 
+		function search() {
+
+			/*$.ajax({
+				url:request("/checkWithdraw")+"&accessToken="+localStorage.getItem("access_Token"),
+				dataType:"json",
+				success:function(data){
+					if(data.success == 0){
+						window.parent.document.getElementById("you").style.display = "block";
+						var html = '<div class="r_con_a"><span class="r_con_close">×</span><div class="r_con_b">提现通知</div><div class="r_con_c">'+data.data+'</div></div>'
+							$(".r_con").append(html)
+						music.play(); //没有就播放 
+						
+					}
+				}
+				
+			}) */
+			console.log(1)
+		}
+		//删除父类
+		$(document).on("click", '.r_con_close', function() {
+//			$(this).parent().remove()
+			$(this).parent().fadeOut();
+		})
+		
+		if(localStorage.getItem("role") == 6){
+			//每一秒查询一次
+			//setInterval("search()", 3000);
+			//window.parent.document.getElementById("you").style.display = "none";
+		}
+	
+	</script>
+
+</html>

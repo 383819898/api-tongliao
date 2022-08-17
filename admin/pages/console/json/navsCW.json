@@ -1,0 +1,28 @@
+{
+	"contentManagement": [
+		
+		
+		{
+			"title": "系统账单",
+			"icon": "&#xe62a;",
+			"href": "",
+			"spread": false,
+			"recharge":true,
+			"children": [
+				{
+					"title": "提现记录",
+					"icon": "&#xe632;",
+					"href": "/pages/console/raiseCash.html",
+					"spread": false
+				}
+			]
+
+		}
+		
+	
+
+	]
+	
+}
+
+

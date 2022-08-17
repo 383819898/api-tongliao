@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>提现</title>
+	</head>
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+	<link rel="stylesheet" href="/pages/jqueryTcc/css/style.css" />
+	<script type="text/javascript" src="/pages/common/jquery/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="/pages/console/assets/xss-filters.1.2.7.min.js"></script>
+	<script type="text/javascript" src="/pages/common/layui/layui.all.js"></script>
+	<script type="text/javascript" src="/pages/assets/js/jquery.md5.js"></script>
+	<script type="text/javascript" src="/pages/console/js/common.js"></script>
+	<script type="text/javascript" src="./js/console_ui.js"></script>
+	<script type="text/javascript" src="./js/core.js"></script>
+<meta name="format-detection" content="telephone=no" />
+
+<style type="text/css">
+    input[type="button"] {
+        -webkit-appearance: none;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        margin: auto;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .cen {
+        width: 100%%;
+        margin: auto;
+        padding: 10px 0;
+        line-height: 25px;
+        font-size: 14px;
+    }
+
+    .cen>div {
+        width: 94%;
+        margin: auto;
+    }
+
+    .first {
+        background-color: white;
+
+    }
+
+    .first>div {
+        width: 94%;
+        margin: auto;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .first_a {
+        font-size: 20px;
+        color: #000000;
+        padding-bottom: 5px;
+    }
+    .first>div:last-child{
+        border:none;
+    }
+    .first_b {
+        font-size: 14px;
+        color:rgba(0,0,0,0.4);
+        margin-top: 2px;
+    }
+</style>
+
+<body>
+    <div class="first">
+        <div>
+            <div class="first_a">支付宝</div>
+            <div class="first_b">停用，请绑定银行卡</div>
+        </div>
+            <div>
+            <div class="first_a">银行卡</div>
+            <div class="first_b">费率<span id="withdrawRates"></span>%/笔银行付款费</div>
+            <div class="first_b">单日最多提现 <span id="countMaxRates"></span>次</div>
+            <div class="first_b">单笔提现最低 <span id="withdrawMinAmount"></span>块钱起最高 <span id="withdrawMaxAmount"></span>元，单日限额最高 <span id="withdrawDayMaxAmount"></span>元.</div>
+
+        </div>
+    </div>
+
+    <div class="cen">
+        <div>
+<br>提现到账时间:
+<br>受银联新规影响，提现时效更新如下
+<br>每日早上9：00到晚上23.59发起起的提现，3小时左右到账，24点后提现早上9点后到账，除上述时郊外，不同地区，不同银行到账时间会有存在差异。
+<br>个别订单可能会被银行风控系统拦截，会延迟到账，我们会与相关部门沟通，尽快处理你的订单。
+<br>如出现提现多次打款失败，通常为卡片兼容问题，请更换银行卡后再试，或者联系平台客服处理
+<br>注意 部分银行小额打款时不会发短信通知，到账情况请以银行流水为准。
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    $.ajax({
+        url: request('/console/config'),
+        type: "POST",
+        dataType: "json",
+        success: function(result) {
+			$("#withdrawRates").text(result.data.withdrawRates*100)
+			$("#countMaxRates").text(result.data.countMaxRates)
+			$("#withdrawMinAmount").text(result.data.withdrawMinAmount)
+			$("#withdrawMaxAmount").text(result.data.withdrawMaxAmount)
+			$("#withdrawDayMaxAmount").text(result.data.withdrawDayMaxAmount)
+        }
+
+    })
+</script>
+
+</html>

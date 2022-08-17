@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="https://unpkg.com/node-forge@0.7.0/dist/forge.min.js"></script>-->
+    <script src="js/forge.js"></script>
+    <script language="JavaScript">
+      /**
+       * 导出统一的x509&der格式公钥，
+       *
+       * @param publicKeyObject forge使用的公钥对象，
+       */
+      function toPublicKeyData(publicKeyObject) {
+        return forge.asn1.toDer(forge.pki.publicKeyToAsn1(publicKeyObject)).getBytes();
+      }
+
+      /**
+       * 导入x509&der格式公钥，
+       *
+       * @param publicKeyData x509&der格式公钥，
+       */
+      function fromPublicKeyData(publicKeyData) {
+        return forge.pki.publicKeyFromAsn1(forge.asn1.fromDer(publicKeyData));
+      }
+
+      /**
+       * 导出统一的pkcs1&der格式私钥，
+       *
+       * @param privateKeyObject forge使用的私钥对象，
+       */
+      function toPrivateKeyData(privateKeyObject) {
+        return forge.asn1.toDer(forge.pki.privateKeyToAsn1(privateKeyObject)).getBytes();
+      }
+
+      /**
+       * 导入pkcs1&der格式私钥，
+       *
+       * @param privateKeyData pkcs1&der格式私钥，
+       */
+      function fromPrivateKeyData(privateKeyData) {
+        return forge.pki.privateKeyFromAsn1(forge.asn1.fromDer(privateKeyData));
+      }
+
+      /**
+       * rsa加密，
+       *
+       * @param data 明文byte string,
+       * @param publicKeyData x509&der格式公钥，
+       */
+      function rsaEncrypt(data, publicKeyData) {
+        return fromPublicKeyData(publicKeyData).encrypt(data);
+      }
+
+      /**
+       * rsa解密，
+       *
+       * @param data 密文byte string,
+       * @param privateKeyData pkcs1&der格式私钥，
+       */
+      function rsaDecrypt(data, privateKeyData) {
+        return fromPrivateKeyData(privateKeyData).decrypt(data);
+      }
+
+      //  test
+      function testCode() {
+          var priKey = "MIICXQIBAAKBgQCwk5smHDnRwWYuk804WRTx8GPnQkeaaHKqeD3uG7/CvWXbgP9rDgvDnCvtBifpdGjhs9ZtEcO6eVpS00H95LRFimT6zywvdDBa/sRLdzbSzTk3DipluvXbAJg4yAMU1AQz0ibhvTN+u2nHmZ091m6cfu02s65E/Oc8NqrL6zzPqQIDAQABAoGAZbv1lOSIT5jNBaL0hzWUAr0M4k3msUjiX+M9UzW7qziyOeC9yHFkR8Rv7nUwg6olT3zs2xR0H7kRWE0NZXnifoUbxx+y3yyyIYZFPXHYyNmTyF7LUJt1ApXvVS1HXgTx4XXWStLCoTn6R54qb8Vug4EG4JClEcwOQU+IrhIYlq0CQQDgneBjy00TpokPUcH7D63yeqC4fXnAA8fZQWvsDBK1G6eY7V8+fskyeEzNK8zzBsfbWg8xn3xGpPY2Iv+h4Z3/AkEAyT9sZ6LRsCUqQOwfMmL93jDt+wSART3fhorJi+lfO6Kf35jKBZur16kbjWkb5alN0XOQI0VyZ1rQYUrbT+viVwJBAJu9u/VV5GaIpSYDGU48C+9CCaiCD+YMeQhxrSPpJxt+RlHp3I1Xmaet9AqaoSus+uxj4H8WxzOwc6sLz1XuOv8CQCkI0J7VGTJ0cYgpXTcV7jPHAE9lnI4BzrkNRYlMvYlYYIbkDZVVJ5XiumZ8Hx8WBXMGwEYg2/HtF34vGEbUjyMCQQCfLrYPtBTObMGMrxSTeNkI4dZ5+DBLemZwxkVAcbpPqt5IPJ6PwaFamsu+rMY1A550y9t1KKRspwbmMf6e6gqx";
+          var code = "TFgJFPMgGTJOodFtvgIoOuhdpwSvAv63Yujp2phN+ErWQHiBjPv/PDSCKRCp93hevyosDx6M50xGbyTT8e4uBDN77KCIAtN1EpeLmxLJrQoGDv3UKsgGmYPGaEW6cFda9prkAsMjJd6OZKaUlkv+G3vZTUdpVLbPkvPAu10omag=";
+          priKey = forge.util.decode64(priKey);
+          // rsaDecrypt(forge.util.decode64(code), forge.util.decode64(priKey));
+          let deCode = this.rsaDecrypt(forge.util.decode64(code),priKey);
+
+          console.log("deCode :"+forge.util.encode64(deCode));
+      }
+
+      /**
+       * rsa签名，算法统一的Sha1withRSA，
+       *
+       * @param data 要签名的内容，
+       * @param privateKeyData pkcs1&der格式私钥，
+       */
+      function rsaSign(data, privateKeyData) {
+        const md = forge.md.sha1.create();
+        md.update(data);
+        return fromPrivateKeyData(privateKeyData).sign(md);
+      }
+
+      /**
+       * rsa验签，算法统一的Sha1withRSA，
+       *
+       * @param data 要验证签名的内容，
+       * @param publicKeyData x509&der格式公钥，
+       * @param sign 签名结果，
+       */
+      function rsaVerify(data, publicKeyData, sign) {
+        const md = forge.md.sha1.create();
+        md.update(data);
+        return fromPublicKeyData(publicKeyData).verify(md.digest().getBytes(), sign);
+      }
+
+      // java生成的x509&der格式公钥的base64编码，
+      const PUBLIC_KEY_BASE64 = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCCjpncvOtMHIp4Bv9sX3JMoSlYKCWsaHdDZ5Oi+QybEDQQlk+MS0wDv+CodsbBFkFwkYcScJzXO/2tM7zVLJR71H761u/woIC5WiBivEMfF6paD0oUM/M440N6ek9ZVONd+W29tnsA+pRVPhN8JhIJaWpuB//UoROXp0PWMjfiZwIDAQAB';
+      // java生成的pkcs1&der格式私钥的base64编码，
+      const PRIVATE_KEY_BASE64 = 'MIICXAIBAAKBgQCCjpncvOtMHIp4Bv9sX3JMoSlYKCWsaHdDZ5Oi+QybEDQQlk+MS0wDv+CodsbBFkFwkYcScJzXO/2tM7zVLJR71H761u/woIC5WiBivEMfF6paD0oUM/M440N6ek9ZVONd+W29tnsA+pRVPhN8JhIJaWpuB//UoROXp0PWMjfiZwIDAQABAoGAd/oYBzRNfzpTPY4guDTWUvlfhzYNuOyffP/4OrJoFS/EyOF45NJlXqS8DdRpPhP3uzzhRd7bIyhsLPj4tWYsZGuyA+GyOjF9Zj/rOWPU1rP4qWSFQ1p9pHvugoi3yt9I1bIqggvUcXk3hdnuVdfSjQE1fY5lpXZvGKB6zNpqZVECQQDuWimYnFgc/1BJtSfCwtKiN0eFMw8S4gTyzWttwOtFxBsHo7Q1l5Xvk564kwZXr2CuOXahrJaDjYm7vNzfoy6bAkEAjDk9QynP8YXQsISPB/X/PxYYpZbAti85sk3JPVO2jb3tAkxCYmIxUg1xgpogaOupqKxeQe83gD8742+5xSXSJQJASuFegghUEkAPjChyZlhobffp6ynASZFiNplcb62U/GUAjOTcH54Qx6Rbz+a4rmF1gSaiY2ZiHtAffjB2P3f3kwJASBx7k9mh1ZwyeUSCZd6tOB096ZJAYrCgpEB6eC5f2D7O7vqWvQ+wO3ksYbSvbCWdZ1/VTWUfDrX2L31adLeBfQJBALGYWVO6Ksv72k1vbSywhLYOKVe3JLZiZgFUNvKLh0g1Tfm1pK29veSSGey8HIkGtI04E6tgQVLx3adZSxjdnFI=';
+
+      /**
+       * 加密测试，
+       *
+       * @param message 加密内容，
+       * @param kp 公私钥对象，包含公钥publicKey和私钥privateKey,
+       */
+      function encryptTest(message, kp) {
+        const encrypted = rsaEncrypt(message, toPublicKeyData(kp.publicKey));
+        console.log('encrypted: ' + forge.util.encode64(encrypted));
+        const decrypted = rsaDecrypt(encrypted, toPrivateKeyData(kp.privateKey));
+        console.log('decrypted: ' + forge.util.encode64(decrypted));
+        console.assert(message === decrypted);
+      }
+
+      function signTest(expectBase64, message, kp) {
+        const signature = rsaSign(message, toPrivateKeyData(kp.privateKey));
+        if(expectBase64 != null) {
+          console.assert(forge.util.encode64(signature) === expectBase64);
+        }
+        console.log('signature: ' + forge.util.encode64(signature));
+        console.assert(rsaVerify(message, toPublicKeyData(kp.publicKey), signature));
+      }
+
+      function keyPairTestEncrypt(kp) {
+      }
+
+      /**
+       * 加密测试，
+       *
+       * @param kp 公私钥对象，包含公钥publicKey和私钥privateKey,
+       */
+      function keyPairTest(kp) {
+        encryptTest('hello', kp);
+        encryptTest(forge.util.hexToBytes('01023334'), kp);
+        // util.binary.base64.decode得到的是Uint8Array， util.decode64得到的是byte string,
+        encryptTest(forge.util.createBuffer(forge.util.binary.base64.decode('kolOt/LYqkhf/RZu6aJcIA==')).getBytes(), kp);
+        encryptTest('hello', kp);
+        encryptTest(forge.util.hexToBytes('01023334'), kp);
+      }
+
+      /**
+       * 生成rsa公私钥测试，
+       */
+      function genKeyPair() {
+        const kp = forge.pki.rsa.generateKeyPair(1024);
+        // 和其他平台统一的(pkcs1|x509)&der格式公私钥字节数组，
+        const publicKey = toPublicKeyData(kp.publicKey);
+        const privateKey = toPublicKeyData(kp.privateKey);
+        console.log('privateKeyBase64: ' + forge.util.encode64(privateKey));
+        console.log('publicKeyBase64: ' + forge.util.encode64(publicKey));
+        keyPairTestEncrypt(kp);
+        signTest(null, 'hello', kp);
+        signTest(null, forge.util.decode64('kolOt/LYqkhf/RZu6aJcIA=='), kp);
+      }
+
+      /**
+       * 解析其他平台生成的公私钥测试，
+       */
+      function decodeKeyPair() {
+        // forge使用的公私钥对象，
+        const kp = {
+          publicKey: fromPublicKeyData(forge.util.decode64(PUBLIC_KEY_BASE64)),
+          privateKey: fromPrivateKeyData(forge.util.decode64(PRIVATE_KEY_BASE64)),
+        };
+        console.assert(PUBLIC_KEY_BASE64 === forge.util.encode64(toPublicKeyData(kp.publicKey)));
+        console.assert(PRIVATE_KEY_BASE64 === forge.util.encode64(toPrivateKeyData(kp.privateKey)));
+        keyPairTest(kp);
+        signTest('b1bE8VRWHu3Lwe+kGls6M8uHGQ4Ft/QeAHNpGaLP5tZvZy9CmVKvkNOtQauFq+ETLcynG/crmEhBe0nlx/0gZjyAXv5Ygzct62tPNLl36CIiM5h+YJI+8eym+mCGeSnJsWLxiI96gUQ/dNCyVPrpAY1Zs9Ivw1u8rHEJtDSA+pE=', 'hello', kp);
+        signTest('RvxmCkUxhtSPLss712C2vH7jpXaV82QXDe/e9EaclgWuVPEliDPmUkwg20PfG5d/xM0l3LAEexHAUWD3svg6HTWo9zw7/l+fYxtkbv59i8Uz7r5Y+j3HVaHKevFEw2Z34PHbiPXVNYBRE/4Qzl8wLT2ZSLzo50yBBFziD4LgvtU=', forge.util.decode64('kolOt/LYqkhf/RZu6aJcIA=='), kp);
+      }
+
+      genKeyPair();
+      decodeKeyPair();
+      testCode()
+    </script>
+</head>
+<body>
+
+</body>
+<!--<script src="assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>-->
+<!--<script>
+    $(function(){
+        decodeKeyPair();
+    })
+</script>-->
+</html>

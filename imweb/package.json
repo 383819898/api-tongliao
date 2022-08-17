@@ -1,0 +1,25 @@
+{
+	"main": "index.html",
+	"name": "app",   //全局唯一name
+	"description": "dist app of node-webkit",  //程序描述
+	"version":"0.1.0", //版本号
+	"window": {
+		"title": "企聊客户端",  //设置默认title
+		"icon": "144.png", //窗口的icon。
+		"toolbar": true,  //显示导航栏
+		"resizable": false,  //允许调整窗口大小
+		"fullscreen": false,  //全屏
+		"show_in_taskbar": true,  //win任务栏显示图标
+		"frame": true,  //程序边框显示
+		"position": "center",  //窗口打开时的位置，可以设置为“null”、“center”或者“mouse”
+		"width":1220,  //主窗口的的宽度
+		"height": 760,  //主窗口的的高度
+//		"height": 1000,  //主窗口的的高度
+//		"max_width": 1220,  //窗口显示的最大宽度
+//		"max_height": 760,  //窗口显示的最大高度
+		"min_width": 1000,  //窗口显示的最大宽度
+		"min_height": 600,  //窗口显示的最大高度
+		"show": true, //启动时窗口可见。
+		"kiosk": false  //如果使用kiosk模式，应用程序将全屏显示，并且阻止用户离开应用。
+	}
+}

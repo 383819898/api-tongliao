@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>久久聊中文版 即时通讯</title>
+		<meta name="keywords" content="久久聊中文版，vk， vk苹果下载，VK安卓下载，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK电脑版下载，久久聊中文版，vk，vk苹果下载，VK安卓下载，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK中文PC版。" />
+		<meta name="description" content="久久聊中文版，vk，vk苹果下载，VK安卓下载 ，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK电脑版下载，久久聊中文版，vk，vk苹果下载，VK安卓下载，VK中文，VK官方，VK官网，VK网页版，VK电脑版，VK电脑版下载，VK中文PC版，VK中文PC版。" />
+		<link rel="icon" href="img/144.png" />
+	</head>
+
+	<body>
+		<div>
+			<img src="img/bjpc.png" class="bj" />
+			<div class="head">VKZWBIM</div>
+			<div class="li">
+				<img src="img/logo2.png" width="180" />
+				<div class="mi">久久聊中文版 </div>
+				<div class="mi2">私有部署 &nbsp;加密通讯 &nbsp; 安全高效 &nbsp;多端同步</div>
+			</div>
+			<div class="xia">
+				<!--<a href="http://www.vkzwb.com/ios/ios.html" target="_blank">-->
+				<div style="background-color: #f0c20c;" onclick="ios()">
+					<img src="img/pg2.png" /> IOS 下载
+				</div>
+				<!--</a>-->
+				<!--<a href="/down/vkzwb.apk" target="_blank">-->
+				<div style="background-color: #3bc624;" onclick="android()">
+					<img src="img/yi2.png" /> Android 下载
+				</div>
+				<!--</a>-->
+				<a href="http://web.vkzwb.com/imweb" target="_blank">
+					<div style="background-color: darkcyan;">
+						<img src="img/logo3.png" id="xiaimg" /> web网页版
+					</div>
+				</a>
+
+				<a href="http://www.vkzwb.com/down/VKZWB.exe" target="_blank">
+					<div style="background-color: dodgerblue;">
+						<img src="img/logo3.png" id="xiaimg" /> Windows 下载
+					</div>
+				</a>
+
+			</div>
+			<div class="sy">VK 中文版官网版权所有</div>
+		</div>
+		<!--弹窗-->
+		<div class="tan" id="tan">
+
+			<div class="tan_yy" onclick="hide()"></div>
+			<div class="tan_cen">
+				<div class="close" onclick="hide()">×</div>
+				<div class="tan2" id="tan2"></div>
+				<div class="tan3">
+					<img src="" id="down">
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+
+	<script type="text/javascript">
+		function fangfa() {
+			var browser = {
+				versions: function() {
+					var u = navigator.userAgent,
+						app = navigator.appVersion;
+					return { //移动终端浏览器版本信息
+						trident: u.indexOf('Trident') > -1, //IE内核
+						presto: u.indexOf('Presto') > -1, //opera内核
+						webKit: u.indexOf('AppleWebKit') > -1, //苹果，谷歌内核
+						gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+						mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+						ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+						android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+						iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+						iPad: u.indexOf('iPad') > -1, //是否iPad
+						webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+					};
+				}(),
+				language: (navigator.browserLanguage || navigator.language).toLowerCase()
+			}
+			if(browser.versions.mobile) { //判断是否是移动设备打开。browser代码在下面
+				var ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
+				if(ua.match(/MicroMessenger/i) == "micromessenger") {
+					// "微信端"
+					localStorage.setItem("mobile", "wei")
+					//在微信中打开
+					window.location = "./mobile.html"
+				} else {
+					if(browser.versions.ios == true) {
+						//IOS
+						window.location = "./mobile.html"
+					} else {
+						//android
+						window.location = "./mobile.html"
+					}
+				}
+			} else {
+				//否则就是PC浏览器打开
+
+			}
+		}
+
+		fangfa();
+
+		//弹窗
+		function hide() {
+
+			var tan = document.getElementById("tan");
+			tan.style.display = "none"
+		}
+
+		function ios() {
+			var tan = document.getElementById("tan");
+			tan.style.display = "block";
+			document.getElementById("tan2").innerText = "ios   二维码下载";
+			document.getElementById("down").src = "img/iosxz.png"
+		}
+
+		function android() {
+			var tan = document.getElementById("tan");
+			tan.style.display = "block";
+			document.getElementById("tan2").innerText = "Android   二维码下载";
+			document.getElementById("down").src = "img/anzhuoxz.png"
+		}
+	</script>
+	<style type="text/css">
+		.close {
+			position: absolute;
+			top: -15px;
+			right: -28px;
+			background-color: white;
+			z-index: 15;
+			font-size: 30px;
+			color: black;
+			margin-top: -;
+			font-weight: bolder;
+			width: 32px;
+			height: 32px;
+			cursor: pointer;
+			border-radius: 50%;
+			line-height: 30px;
+		}
+		
+		.tan {
+			position: fixed;
+			z-index: 10;
+			margin: auto;
+			display: none;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+		}
+		
+		.tan_yy {
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.3);
+			position: absolute;
+			z-index: 10;
+		}
+		
+		.tan_cen {
+			width: 320px;
+			background-color: white;
+			height: 320px;
+			text-align: center;
+			font-size: 24px;
+			position: absolute;
+			margin: auto;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			z-index: 15;
+			border-radius: 8px;
+			box-shadow: 0px 0px 5px #CCCCCC;
+		}
+		
+		.tan2 {
+			padding: 15px 0;
+		}
+		
+		.tan3 {
+			width: 240px;
+			height: 240px;
+			margin: auto;
+			text-align: center;
+		}
+		
+		.tan3>img {
+			width: 100%;
+			height: 100%;
+		}
+		
+		@media screen and (max-width: 1400px) {
+			body {
+				zoom: 0.7;
+			}
+		}
+		
+		body {
+			width: 100%;
+			overflow: hidden;
+		}
+		
+		.mob {
+			position: absolute;
+			bottom: 0px;
+			top: 60px;
+			right: 250px;
+			z-index: 10;
+		}
+		
+		.head {
+			width: 1180px;
+			position: absolute;
+			z-index: 10;
+			top: 10px;
+			color: white;
+			letter-spacing: 100px;
+			font-size: 32px;
+			left: 180px;
+			/*text-align: center;*/
+		}
+		
+		a {
+			text-decoration: none;
+		}
+		
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		
+		.bj {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			z-index: 0;
+			left: 0px;
+			top: 0px;
+			bottom: 0px;
+			top: 0px;
+		}
+		
+		.qi {
+			position: absolute;
+			z-index: 0;
+			width: 80%;
+			left: 0px;
+			right: 0;
+			top: 20px;
+			margin: auto;
+		}
+		
+		.li {
+			width: 800px;
+			position: absolute;
+			z-index: 0;
+			left: 180px;
+			right: 0;
+			top: 200px;
+		}
+		
+		.li>img {
+			float: left;
+		}
+		
+		.mi {
+			float: right;
+			color: white;
+			font-size: 48px;
+			width: 500px;
+			height: 120px;
+			line-height: 120px;
+		}
+		
+		.mi2 {
+			float: right;
+			color: white;
+			width: 500px;
+			margin-top: 10px;
+			font-size: 27px;
+		}
+		
+		.xia {
+			position: absolute;
+			z-index: 0;
+			width: 650px;
+			left: 180px;
+			right: 0;
+			top: 450px;
+			color: white;
+		}
+		
+		.xia div {
+			float: left;
+			color: white;
+			width: 260px;
+			height: 66px;
+			border-radius: 80px;
+			margin-right: 50px;
+			font-size: 24px;
+			line-height: 66px;
+			margin-bottom: 30px;
+		}
+		
+		.xia div img {
+			float: left;
+			margin-top: 8px;
+			margin-left: 20px;
+			margin-right: 20px;
+		}
+		
+		#xiaimg {
+			margin-top: 18px;
+		}
+		
+		.sy {
+			position: absolute;
+			bottom: 20px;
+			margin: auto;
+			left: 0;
+			right: 0;
+			width: 100%;
+			text-align: center;
+			color: #333333;
+		}
+	</style>
+
+</html>
+
+<!-- 徐成  -->
