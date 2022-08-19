@@ -10,6 +10,7 @@ import cn.xyz.mianshi.model.*;
 import cn.xyz.mianshi.opensdk.entity.SkOpenAccount;
 import cn.xyz.mianshi.opensdk.entity.SkOpenApp;
 import cn.xyz.mianshi.opensdk.entity.SkOpenCheckLog;
+import cn.xyz.mianshi.scheduleds.CancelControlTask;
 import cn.xyz.mianshi.service.DiscoveryManager;
 import cn.xyz.mianshi.service.MsgInferceptManager;
 import cn.xyz.mianshi.service.impl.LiveRoomManagerImpl;
@@ -24,6 +25,7 @@ import cn.xyz.mianshi.vo.User.UserLoginLog;
 import cn.xyz.repository.BanedIpRepository;
 import cn.xyz.service.KXMPPServiceImpl;
 import cn.xyz.service.KXMPPServiceImpl.MessageBean;
+import cn.xyz.service.TaskService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
@@ -32,6 +34,7 @@ import com.mongodb.*;
 import com.wxpay.utils.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -660,12 +663,25 @@ public class AdminController extends AbstractController {
 		String account = request.getParameter("account");
 		String password = request.getParameter("password");
 		String areaCode = request.getParameter("areaCode");
+		String valiCode = request.getParameter("valiCode");
 
 
-		if (StringUtil.isEmpty(account) || StringUtil.isEmpty(password)) {
+		if (StringUtil.isEmpty(account) || StringUtil.isEmpty(password) ||StringUtil.isEmpty(valiCode) ) {
 			return JSONMessage.failure("用户名或密码不能为空!!");
 		}
 
+		ClientConfig clientconfig = SKBeanUtils.getDatastore().createQuery(ClientConfig.class).field("_id").equal(10000)
+				.get();
+		String adminPhone = clientconfig.getAdminPhone();
+		adminPhone = "86" + adminPhone;
+		String verificationCode = SKBeanUtils.getRedisCRUD().get(adminPhone);
+		log.info("verificationCode::{}, adminPhone::{} , valiCode::{} ",verificationCode,adminPhone,valiCode);
+		System.out.println("verificationCode = " + verificationCode);
+		System.out.println("adminPhone = " + adminPhone);
+		System.out.println("valiCode = " + valiCode);
+		if (StringUtils.isEmpty(verificationCode) || ! verificationCode.equals(valiCode)){
+			return JSONMessage.failure("验证码错误!!");
+		}
 
 		User user = getUserManager().getUser((StringUtil.isEmpty(areaCode) ? (code + account) : (areaCode + account)));
 		Role userRole = SKBeanUtils.getRoleManager().getUserRole(user.getUserId(), null, 5);
@@ -4577,5 +4593,67 @@ public class AdminController extends AbstractController {
 		return JSONMessage.success("设置红包金额成功!");
 	}
 
+
+
+
+	@RequestMapping({"/saveOrUpdateRoomControl"})
+	public JSONMessage saveOrUpdateRoomControl(@ModelAttribute RoomControlNewVO roomControlVO) {
+		try {
+			byte role = (byte)SKBeanUtils.getRoleManager().getUserRoleByUserId(ReqUtil.getUserId());
+			if (role != 6 && role != 5 && role != 4) {
+				return JSONMessage.failure("权限不足");
+			} else {
+				User user = (User)SKBeanUtils.getUserManager().get(roomControlVO.getRoomOwnUserId());
+				if (null == user) {
+					return JSONMessage.failure("操作失败");
+				} else if (role == 4 && !ReqUtil.getUserId().equals(roomControlVO.getRoomOwnUserId())) {
+					return JSONMessage.failure("操作失败,只能由群主账号修改自己群信息");
+				} else {
+					SKBeanUtils.getRoomControlManager().saveOrUpdate(roomControlVO);
+					return JSONMessage.success();
+				}
+			}
+		} catch (Exception var4) {
+			return JSONMessage.failure(var4.getMessage());
+		}
+	}
+
+	@RequestMapping({"/getRoomControlByRoomId"})
+	public JSONMessage getRoomControlByRoomId(@RequestParam(defaultValue = "") String roomId) {
+		try {
+			RoomControlNewVO data = SKBeanUtils.getRoomControlManager().getRoomControlByRoomId(new ObjectId(roomId));
+			return JSONMessage.success(data);
+		} catch (ServiceException var3) {
+			return JSONMessage.failure(var3.getMessage());
+		}
+	}
+
+	@RequestMapping({"/updateUserRedRule"})
+	public JSONMessage updateUserRedRule(@RequestParam Integer userId, @RequestParam Integer redRuleType, @RequestParam Integer normalControl, @RequestParam Integer normalPercent, @RequestParam Integer bigAmount, @RequestParam Integer bigPercent, @RequestParam Integer minuteNumber) {
+		User user = SKBeanUtils.getUserManager().getUser(userId);
+		if (user != null) {
+			user.setRedRuleType(redRuleType);
+			user.setNormalControl(normalControl);
+			user.setNormalPercent(normalPercent);
+			user.setBigAmount(bigAmount);
+			user.setBigPercent(bigPercent);
+			user.setLastOutTimes(0);
+			user.setLastInTimes(0);
+			user.setLastBigOutTimes(0);
+			user.setLastBigInTimes(0);
+			user.setMinuteNumber(minuteNumber);
+			SKBeanUtils.getUserManager().update(userId, user);
+			TaskService taskService = SKBeanUtils.getTaskManager();
+			taskService.addTask(new CancelControlTask(user.getUserId(), (long)(minuteNumber * 60 * 1000)));
+		}
+
+		return JSONMessage.success();
+	}
+
+	@RequestMapping({"/resetControl"})
+	public JSONMessage resetAllUserControl() {
+		SKBeanUtils.getUserManager().resetControl();
+		return JSONMessage.success();
+	}
 
 }

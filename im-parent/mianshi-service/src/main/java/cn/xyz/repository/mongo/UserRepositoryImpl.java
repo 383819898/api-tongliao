@@ -14,6 +14,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 import org.mongodb.morphia.query.UpdateOpsImpl;
+import org.mongodb.morphia.query.UpdateResults;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -873,5 +874,43 @@ public class UserRepositoryImpl extends MongoRepository<User,Integer> implements
 		// 更新redis中的数据
 		KSessionUtil.deleteUserByUserId(userId);
 	}
+	public int resetControl(Integer userId) {
+		this.logger.info("控制重置开始,用户:{}", userId);
+		Query<User> query = (Query)this.getDatastore().createQuery(this.getEntityClass()).field("_id").equal(userId);
+		UpdateOpsImpl<User> ops = (UpdateOpsImpl)this.getDatastore().createUpdateOperations(this.getEntityClass());
+		ops.set("redRuleType", 0);
+		ops.set("normalControl", 0);
+		ops.set("normalPercent", 0);
+		ops.set("bigAmount", 0);
+		ops.set("bigPercent", 0);
+		ops.set("lastOutTimes", 0);
+		ops.set("lastInTimes", 0);
+		ops.set("lastBigOutTimes", 0);
+		ops.set("lastBigInTimes", 0);
+		ops.set("minuteNumber", 0);
+		UpdateResults updateResults = this.getDatastore().update(query, ops);
+		int count = updateResults.getUpdatedCount();
+		this.logger.info("控制重置完成,数量:{}", count);
+		return count;
+	}
 
+	public int resetControlAll() {
+		this.logger.info("控制重置开始");
+		Query<User> query = this.getDatastore().createQuery(this.getEntityClass());
+		UpdateOpsImpl<User> ops = (UpdateOpsImpl)this.getDatastore().createUpdateOperations(this.getEntityClass());
+		ops.set("redRuleType", 0);
+		ops.set("normalControl", 0);
+		ops.set("normalPercent", 0);
+		ops.set("bigAmount", 0);
+		ops.set("bigPercent", 0);
+		ops.set("lastOutTimes", 0);
+		ops.set("lastInTimes", 0);
+		ops.set("lastBigOutTimes", 0);
+		ops.set("lastBigInTimes", 0);
+		ops.set("minuteNumber", 0);
+		UpdateResults updateResults = this.getDatastore().update(query, ops);
+		int count = updateResults.getUpdatedCount();
+		this.logger.info("控制重置完成,数量:{}", count);
+		return count;
+	}
 }

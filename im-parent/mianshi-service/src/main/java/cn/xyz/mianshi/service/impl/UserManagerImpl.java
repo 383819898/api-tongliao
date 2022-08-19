@@ -3517,5 +3517,11 @@ public class UserManagerImpl extends MongoRepository<User, Integer> implements U
 		query.field("userId").equal(userId).field("operationTime").greaterThanOrEq(startTime);
 		return query.asList();
 	}
+	public int resetControl() {
+		return getUserRepository().resetControlAll();
+	}
 
+	public int resetControl(Integer userId) {
+		return getUserRepository().resetControl(userId);
+	}
 }

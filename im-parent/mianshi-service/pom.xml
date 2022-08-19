@@ -33,6 +33,12 @@
 		    <optional>true</optional> optional=true,依赖不会传递，该项目依赖devtools；之后依赖boot项目的项目如果想要使用devtools，需要重新引入
 		</dependency> -->
 
+		<!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>5.8.5</version>
+		</dependency>
 
 		 <dependency>
             <groupId>org.projectlombok</groupId>

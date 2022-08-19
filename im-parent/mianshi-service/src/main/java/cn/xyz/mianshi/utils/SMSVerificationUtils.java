@@ -19,22 +19,22 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 
-/** @version:（1.0） 
+/** @version:（1.0）
 * @ClassName	SMSPushUtils
-* @Description: （短信验证服务） 
-* @date:2018年9月8日下午12:20:30  
-*/ 
+* @Description: （短信验证服务）
+* @date:2018年9月8日下午12:20:30
+*/
 @Component
 public class SMSVerificationUtils {
-	
+
 	protected static Logger smsLogger=LoggerFactory.getLogger("SMSVerificationUtils");
-	
+
 	public static SmsConfig getSmsConfig() {
 		return SKBeanUtils.getSmsConfig();
 	}
 
 	public static final String SMSFORMAT = "00";
-	
+
 	public static SendSmsResponse sendSms(String telephone, String code, String areaCode) throws ClientException {
 		// 可自助调整超时时间
 		System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -81,6 +81,12 @@ public class SMSVerificationUtils {
 		return sendSmsResponse;
 	}
 
+	public static void main(String[] args) throws ClientException {
+		SendSmsResponse sendSmsResponse = sendSms("18801162296", "123456", "86");
+		System.out.println("sendSmsResponse = " + sendSmsResponse);
+
+	}
+
 	// 使用天天国际短信平台发送国际短信
 	public static String sendSmsToMs360(String telephone, String areaCode, String code) {
 		String msgId = null;
@@ -99,7 +105,7 @@ public class SMSVerificationUtils {
 			if ("86".equals(areaCode) || "886".equals(areaCode) || "852".equals(areaCode)) {
 				String templateChineseSMS = new String(getSmsConfig().getTemplateChineseSMS().getBytes("ISO-8859-1"),"utf-8");
 				msg = templateChineseSMS + code;
-				
+
 			}
 			// codec=8 Unicode 编码, 3 ISO-8859-1, 0 ASCII
 			// 短信内容 HEX 编码，8 为 UTF-16BE HEX 编码， dataCoding = 8 ,支持所有国家的语言，建议直接使用
@@ -138,6 +144,6 @@ public class SMSVerificationUtils {
 		sms.setTime(DateUtil.currentTimeSeconds());
 		ConstantUtil.dsForRW.save(sms);
 	}
-	
-	
+
+
 }

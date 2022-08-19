@@ -1966,8 +1966,11 @@ sign	MD5签名	是	否
 		if (null != sendSms && "OK".equals(sendSms.getCode())) {
 
 			random = UUID.randomUUID().toString().replace("-", "");
+			log.info("adminPhone ::{},  smsCode::{}",adminPhone,smsCode);
+			SKBeanUtils.getRedisCRUD().setWithExpireTime(adminPhone, smsCode, 60 * 30);
+			String verificationCode = SKBeanUtils.getRedisCRUD().get(adminPhone);
+			log.info("adminPhone ::{},  smsCode::{}，  verificationCode：：：{}",adminPhone,smsCode,verificationCode);
 
-			SKBeanUtils.getRedisCRUD().setWithExpireTime(random, smsCode, 180);
 			json.setSuccess("0");
 			json.setData(random);// 发送随机字符给 浏览器，浏览器带随机字符 来验证验证码是否正确
 			json.setMsg("短信发送成功！");

@@ -17,9 +17,9 @@
 </head>
 
 <body class="loginBody">
-	
+
 	<form class="layui-form">
-		
+
 		<div class="layadmin-user-login-box layadmin-user-login-header layui-center" style="margin: 40px 0;">
 			<h2>久久聊即时通讯公众号</h2>
 		</div>
@@ -33,18 +33,23 @@
 			<label style="top:-10px">密码</label>
 			<input type="password" placeholder="请输入密码" autocomplete="off" name="password" class="layui-input" lay-verify="required">
 		</div>
-		
+
+		<div class="layui-form-item input-item">
+			<label style="top:-10px">验证码</label>
+			<input type="text" placeholder="请输入验证码" autocomplete="off" name="valiCode" class="layui-input" lay-verify="required" style="width: 8rem;display: inline;"><button type="button" class="layui-btn"  id="verificationCode" onclick="sendSms()" >获取验证码</button>
+		</div>
+
 
 		<div class="layui-form-item" style="margin-top: 40px;">
 			<button class="layui-btn layui-block" lay-filter="mpUser_login" lay-submit>登录</button>
 		</div>
-		
+
 	</form>
 
 	<script type="text/javascript" src="./common/jquery/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="./common/jquery/jquery.md5.js"></script>
 	<script type="text/javascript" src="./common/layui/layui.all.js"></script>
 	<script type="text/javascript" src="./js/mp_login.js"></script>
-	
+
 </body>
 </html>

@@ -1,17 +1,17 @@
 layui.use(['form'], function() {
     var form = layui.form;
-    
+
     // checkLogin();
     //提交
     form.on('submit(sysUser_login)', function(obj) {
-		
-		
+
+
         // obj.field.verkey = codeKey;1562899956759
-        
-        obj.field.password = $.md5(obj.field.password); 
-        //obj.field.valiCode = $.md5(obj.field.valiCode); 
+
+        obj.field.password = $.md5(obj.field.password);
+        obj.field.valiCode = $.md5(obj.field.valiCode);
         //obj.field.random = localStorage.getItem("random");
-        
+
       /*  if( obj.field.random == null){
         	alert("验证码异常");
         	return;
@@ -45,12 +45,12 @@ layui.use(['form'], function() {
                 setTimeout(function() {
                     location.replace("/pages/console/index.html");
                 }, 1000);
-                
+
             } else if(data.resultCode != 1) {
                 layer.closeAll('loading');
                 //layer.msg(data.resultMsg,{icon: 2});
                 layer.msg(data.resultMsg,{icon: 2});
-                
+
             }
         }, "json");
 
@@ -75,27 +75,23 @@ layui.use(['form'], function() {
             $(this).parent().removeClass("layui-input-active");
         }
     })
-    
-    
 });
 
-
 function sendSms(){
-	$.ajax({
-		url:"http://api.jiujiuim.com:8092/sendSms",
-		dataType:"json",
-		async:false,
-		success:function(data){
-			console.log(data)
-			if(data.success == 0){
-				localStorage.setItem("random",data.data)
-				 layer.alert("短信发送成功！");
-				return ;
-			}
-			 layer.alert("短信发送失败！");
-		}
-	})
+    $.ajax({
+        url:"http://api.jiujiuim.com:8092/sendSms",
+        dataType:"json",
+        async:false,
+        success:function(data){
+            console.log(data)
+            if(data.success == 0){
+                localStorage.setItem("random",data.data)
+                layer.alert("短信发送成功！");
+                return ;
+            }
+            layer.alert("短信发送失败！");
+        }
+    })
 
 }
-
 

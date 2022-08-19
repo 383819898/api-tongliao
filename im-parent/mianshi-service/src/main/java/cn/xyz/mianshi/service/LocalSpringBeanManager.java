@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import cn.xyz.commons.autoconfigure.BaseProperties;
 import cn.xyz.mianshi.service.impl.*;
 import cn.xyz.repository.mongo.*;
+import cn.xyz.service.TaskService;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.redisson.api.RedissonClient;
@@ -412,5 +413,21 @@ public class LocalSpringBeanManager {
 	public MsgInferceptManagerImpl getMsgInferceptManager(){
 		return msgInferceptManager;
 	}
+	@Autowired
+	private RoomControlManagerImpl roomControlManager;
+
+	@Autowired
+	public RoomControlManagerImpl getRoomControlManager() {
+		return this.roomControlManager;
+	}
+
+	@Autowired
+	private TaskService taskService;
+	@Autowired
+	public TaskService getTaskManager() {
+		return this.taskService;
+	}
+
+
 }
 

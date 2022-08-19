@@ -2,8 +2,10 @@ package cn.xyz.mianshi.utils;
 
 import cn.xyz.mianshi.service.impl.*;
 import cn.xyz.repository.mongo.*;
+import cn.xyz.service.TaskService;
 import org.mongodb.morphia.Datastore;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -56,7 +58,8 @@ public class SKBeanUtils implements ApplicationContextAware {
 
 
 
-
+	@Autowired
+	private RoomControlManagerImpl roomControlManager;
 	public static Datastore getDatastore() {
 		return getLocalSpringBeanManager().getDatastore();
 	}
@@ -271,8 +274,16 @@ public class SKBeanUtils implements ApplicationContextAware {
 		return getLocalSpringBeanManager().getMsgInferceptManager();
 	}
 
+	public static RoomControlManagerImpl getRoomControlManager() {
+		return getLocalSpringBeanManager().getRoomControlManager();
+	}
 	/*public static PressureTest getPressureTestManager(){
 		return getLocalSpringBeanManager().getPressureTestManager();
 	}*/
+
+	public static TaskService getTaskManager() {
+		return getLocalSpringBeanManager().getTaskManager();
+	}
+
 }
 
